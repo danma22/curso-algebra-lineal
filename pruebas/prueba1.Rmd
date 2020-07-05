@@ -1,0 +1,23 @@
+---
+title: "prueba2"
+author: "Daniel Eduardo Macias Estrada"
+date: "19/6/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(magic)
+```
+
+#Prueba de cuadrados mágicos
+Se realizará un cuadrado mágico de tamaño 6
+```{r}
+magic(6)
+```
+
+
+```{python}
+x = 3
+```
+

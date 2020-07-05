@@ -1,0 +1,66 @@
+---
+title: "Preliminares del curso"
+author: "Daniel Eduardo Macias Estrada"
+date: "23/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+```
+
+## Uso de números complejos en python
+
+#### Definición
+Para definir un número complejo en una variable es posible usar la siguiente linea
+```{python}
+z1 = 4+3j
+z1
+```
+
+Por otro lado, también es posible definir un complejo con el método complex(), que recibe 2 argumentos, el valor de la parte real y la parte imaginaria.
+
+```{python}
+z2 = complex(1,7)
+z2
+```
+
+#### Tipo de dato
+Con el afán de comprobar si una variable es de tipo complejo, se usara la función **type()**
+
+```{python}
+type(z2)
+```
+
+#### Propiedades de la clase y funciones
+Para conocer la parte real o imaginaria del número complejo se usan las propiedades **.real** y **.imag**
+
+```{python}
+z2.real
+z2.imag
+```
+
+Para conocer obtener el conjugado de un número complejo se usa la función **.conjugate()** 
+
+```{python}
+z1.conjugate()
+```
+
+En el caso de necesitar obtener el módulo y el argumento (principal) de todo número complejo, se usarán la funciones **abs()** y **cmath.phase()**
+
+```{python}
+import cmath
+abs(z2)
+cmath.phase(z2)
+```
+
+#### Operaciones básicas
+La realización de operaciones básicas es hecha de manera normal
+
+```{python}
+z1*2
+z2+z1
+z1-z2
+```
+

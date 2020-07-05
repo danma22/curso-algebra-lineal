@@ -1,0 +1,39 @@
+---
+title: "numeros complejos ocn r"
+author: "Daniel Eduardo Macias Estrada"
+date: "23/6/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Manejo de números complejos
+
+A continuación se mostrarán las distintas formas de definir un número complejo con R
+
+```{r}
+z1 = 3+2i
+z1
+```
+
+```{r}
+z2 = complex(real = 3, imaginary = 8)
+z2
+```
+
+```{r}
+z3 = complex(modulus = 4, argument = pi)
+z3
+```
+
+```{r}
+typeof(z1)
+```
+
+```{r}
+Re(z1)
+Im(z2)
+```
+
