@@ -1,0 +1,114 @@
+---
+title: "Preliminares del curso"
+author: "Daniel Eduardo Macias Estrada"
+date: "5/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+```
+
+## Polinomios con python
+Para poder ser capaces de manipular polinomios usando el lenguaje python, se requiere tener instalada la libreria *sympy*, que nos ayuda al tratamiento simbólico de los polinomios en python. Simbólico en el sentido de que se maneja con variables y no con números.
+
+Los métodos que serán usados a partir de la libreria, son **sympy.symbols()**, para indicar la variable con la que trabajaremos; y **sympy.Poly()**, al cual se le ingresará el polinomio: 
+
+```{python}
+import sympy
+x = sympy.symbols('x')
+p = sympy.Poly(x**2)
+p
+
+q = sympy.Poly(1 + x + x**3)
+q
+```
+
+A pesar de lo visto anteriorente es posible definir un polinomio de otras maneras. Una de ellas puede ser haciendo uso de otra librería de python llamada *numpy*, al cual se le introduce como argumento un vector con los coeficientes de forma que el grado es descendente.
+
+```{python}
+import numpy
+r = numpy.poly1d([1,2,1])
+print(r)
+
+s = numpy.poly1d([1,2,3,4,5])
+print(s)
+```
+
+**.poly1d()** quiere decir que se maneja polinomios de una dimensión, es decir, con una sola variable.
+
+#### Dos polinomios iguales
+Con el afán de saber si dos polinomios son iguales o no se utiliza el operador **==**.
+
+```{python}
+p == q
+r == s
+```
+
+Los objetos creados de diferentes librerias, a pesar de expresar el mismo polinomio no serán iguales, puesto que son diferentes tipos de objetos.
+
+#### Grado de un polinomio
+Para obtener el grado de un polinomio, se usará el método **.degree()**. 
+
+```{python}
+p.degree()
+q.degree()
+```
+
+En caso de manejar *numpy* se usa otro método, llamado **.order**.
+
+```{python}
+r = numpy.poly1d([1,2,1])
+s = numpy.poly1d([1,2,3,4,5])
+r.order
+s.order
+```
+
+Debido a que python no recuerda las variables definidas en otras chuncks, es necesario volver a definir los polinomios.
+
+
+#### Operaciones básicas
+Son realizadas con los operadores convencionales de siempre. Lo único que cambia es el objeto de salida de acuerdo al tipo de objeto que se maneja.
+
+```{python}
+p+q
+p*q
+
+r = numpy.poly1d([1,2,1])
+s = numpy.poly1d([1,2,3,4,5])
+r+s
+r*s
+```
+
+###### División de polinomios
+En el caso de la división, solo se obtendrá con la librería *numpy*. Se devolverá una tupla en la cuál el primer elemento es el cociente y el segundo el resto.
+
+```{python}
+r = numpy.poly1d([1,2,1])
+s = numpy.poly1d([1,2,3,4,5])
+s/r
+
+r * numpy.poly1d([1,0,2]) + 3 == s
+```
+
+#### Evaluar un polinomio.
+Para poder evaluar un polinomio se usa la librería *numpy*. Es tan fácil como el siguiente ejemplo
+
+```{python}
+r = numpy.poly1d([1,2,1])
+s = numpy.poly1d([1,2,3,4,5])
+r(1)
+s(3)
+```
+
+#### Raiz de un polinomio
+Nuevamente, es requerido la librería *numpy*, de  tal manera que se usará la función **.r**
+
+```{python}
+r = numpy.poly1d([1,2,1])
+s = numpy.poly1d([1,2,3,4,5])
+r.r
+s.r
+```
+

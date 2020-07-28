@@ -1,0 +1,95 @@
+---
+title: "Preliminares del curso"
+author: "Daniel Eduardo Macias Estrada"
+date: "4/7/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(polynom)
+library(pracma)
+```
+
+## Polinomios en R
+
+Para poder definir polinomios dentro de una variable en R y realizar las funciones necesarias para manipularlos, es necesario contar con las librerias *polynom* y *pracma*
+
+Con la función **polynomial(coef=)** podremos definir un polinomio. El valor que tomará **coef=** será un vector de números que indican los coeficientes, de manera ascendente de acuerdo al grado.
+
+```{r}
+p = polynomial(coef=c(1,2,3,4,5))
+p
+```
+
+Los vectores en R se indican con la letra c seguido de paréntesis, donde se indican los valores.
+
+```{r}
+q = polynomial(coef=c(1,2,1))
+q
+```
+
+
+#### Dos polinomios iguales
+Habrá casos en los quese deba verificar si dos polinomios son iguales, para ello se utiliza el operador lógico **==**, usado de la siguiente manera
+
+```{r}
+p == q
+```
+
+
+#### Grado de un polinomio
+Es posible saber el grado de los polinomios declarados con ayuda de la función **length()**, sin embargo como empieza a contar desde el 0, es necesario restar 1 al resultado final
+
+```{r}
+gradoP = length(p)-1
+gradoQ = length(q)-1
+gradoP
+gradoQ
+```
+
+
+#### Operaciones básicas con polinomios
+Operaciones como la suma y el producto de polinomios son cosas sencillas de realizar. De esta manera, se realizan:
+
+```{r}
+# Suma
+p+q
+
+#Multiplicación
+p*q
+```
+
+###### División de polinomios
+En el caso de la división es necesario usar el operador **/**, aunque solo obtengamos el cociente, Para obtener el resto, también conocido como módulo, se usará el operador **%%**
+
+```{r}
+#División de polinomios
+cociente = p / q
+resto = p %% q
+cociente
+resto
+
+(q * cociente) + resto == p
+```
+
+#### Evaluar polinomios
+Con la función **predict(polinomio, x)** es posible evaluar un polinomio sustituyendo x por el valor pasado como argumento.
+
+```{r}
+predict(p,1)
+predict(q,0)
+```
+
+####Raíz de un polinomio
+Para obtener las raíces de un polinomio, es decir el elemento que vuelve al polinomio 0 es, se deberá usar la función **polyroot**
+
+```{r}
+# Raiz del polinomio x^2 + 2x + 1
+polyroot(c(1,2,1))
+
+# Raíz del polinomio x^2-4
+polyroot(c(-4,0,1))
+```
+
+El resultado es un vector de números complejos, a pesar de que la solución bien podría ser en números reales.
