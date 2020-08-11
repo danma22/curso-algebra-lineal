@@ -1,0 +1,238 @@
+---
+title: "Matrices en Octave"
+author: "Daniel Eduardo Macias Estrada"
+date: "9/8/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(octave = "C:/Octave/Octave-5.2.0/mingw64/bin/octave-cli-5.2.0.exe"))
+```
+
+## Introducción
+
+En este documento se mostrará lo básico sobre el manejo de matrices con ayuda del lenguaje Octave, el cual es hecho exclusivamente para este tipo de problemas relacionados con el algebra linear y las matrices
+
+Toda la información recabada está basado enteramente de la obra de Juan Gabrial Gomila Salas, CEO de Frogames, Matemático, Data Scientist & Game Designer
+
+#### Declaración de una matriz
+
+Para crear un vector fila, es simple como hacer lo siguiente
+
+```{octave}
+row = [1 2 3]
+```
+
+En el caso de crear un vector columna se realiza lo siguiente
+
+```{octave}
+col = [1;2;3]
+```
+
+Por ello, para definir una matriz
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+```
+
+#### Acceder a un elemento de la matriz
+
+Para llamar a un elemento, en lugar de usar corchetes, se usará paréntesis. Al contrario de python, el primer elemento se indica con la posición uno y no la cero
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+M(1,1)
+```
+
+Para llamar a una fila
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+M(2,:)
+```
+
+Para llamar a una columna
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+M(:,3)
+```
+
+#### Tipo de matrices
+
+Para conocer que tipo de matriz es la que tenemos, se usará la función **matrix_type()**
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+matrix_type(M)
+
+N = [1 0 0; 0 3 0; 0 0 9]
+matrix_type(N)
+```
+
+#### Matriz nula
+
+Realizar una matriz nula es sencillo, solo es requerido usar la función **repmat(0,m,n)** donde $m$ es el número de filas y $n$ es el número de columnas
+
+```{octave}
+O = repmat(0,3,4)
+```
+
+#### Matriz diagonal
+
+Para crear una matriz diagonal es tan sencillo como usar la matriz **diag()**
+
+```{octave}
+N = diag([1 2 3 4])
+```
+
+Usamos la función **diag()** igualmente para obtener una lista con los elementos de la diagonal principal
+
+```{octave}
+N = diag([1 2 3 4])
+diagonal = diag(N)
+```
+
+#### Dimensión de la matriz
+
+Para obtener la dimensión de una matriz
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+size(M)
+```
+
+
+## Manipulación de matrices
+
+#### Suma de los elementos de una matriz
+
+Así es se realiza una suma
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+suma = sum(sum(M))
+```
+
+Para sumar los elementos de cada fila
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+sumaFil = sum(M, 2)
+```
+
+Para sumar los elementos de cada columna existen 2 formas
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+suma = sum(M)
+```
+
+o bien
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+suma = sum(M, 1)
+```
+
+El segundo parámetro indica como será la suma, si por filas o por columnas. Si es por filas, se indica el 2, en caso contrario, se indica el 1, para columnas. Esto aplica para los siguientes 2 calculos
+
+#### Producto de los elementos de una matriz
+
+Para obtener el producto de los elementos de una matriz
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+producto = prod(prod(M))
+```
+
+
+#### Media aritmética de los elementos de una matriz
+
+Con la función **media()**, se obtendrá la media aritmética de los elementos de una matriz
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+media = mean(mean(M))
+```
+
+
+## Operaciones con matrices
+
+#### Transpuesta de una matriz
+
+Obtener la trnaspuesta de una matriz consiste en solo añadir un apostrofe al nombre de nuestra variable **'**
+
+```{octave}
+M = [1 2 3; 4 5 6; 7 8 9]
+M'
+```
+
+#### Traza de una matriz
+
+Para obtener la traza de una matriz, se usa la función **trace()**
+
+```{octave}
+M = [2 -2 ; 8 -4]
+trace(M)
+```
+
+#### Suma de matrices
+
+```{octave}
+A = [2 -5; 9 2]
+B = [3 4; 2 8]
+A+B
+```
+
+#### Producto de una matriz por un escalar
+
+Producto de una matriz por un escalar
+
+```{octave}
+A = [2 -5; 9 2]
+A*5
+```
+
+#### Producto de matrices
+
+Producto de matrices
+
+```{octave}
+A = [2 -5; 9 2]
+B = [3 4; 2 8]
+A*B
+```
+
+#### Potencia de matrices
+
+Potencia de matrices
+
+```{octave}
+A = [2 -5; 9 2]
+B = [3 4; 2 8]
+A^3
+B^4
+```
+
+## Rango e inversa de una matriz
+
+#### Rango de una matriz
+
+Rango de una matriz
+
+```{octave}
+A = [2 -5; 9 2]
+B = [3 4; 2 8]
+rank(A)
+rank(B)
+```
+
+#### Inversa de una matriz
+
+Inversa de una matriz
+
+```{octave}
+A = [2 -5; 9 2]
+inv(A)
+inv(A)*A
+```
+

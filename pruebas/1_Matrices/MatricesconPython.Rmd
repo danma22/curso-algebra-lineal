@@ -1,0 +1,245 @@
+---
+title: "Matrices en python"
+author: "Daniel Eduardo Macias Estrada"
+date: "8/8/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+```
+
+## Introducción
+
+El contenido de este documento se realizó con la finalidad de recolectar información básica sobre el manejo de matrices con python. Con ayuda de la libreria **numpy**, pues es una librería de funciones matemáticas de alto nivel.
+
+Toda la información recabada está basado enteramente de la obra de Juan Gabrial Gomila Salas, CEO de Frogames, Matemático, Data Scientist & Game Designer
+
+#### Declaración de una matriz
+
+La manera de representar las matrices en python es mediante filas, que son estructura de datos de este lenguaje.
+
+Para crear un vector fila
+```{python}
+row = [1,5,3]
+row
+```
+
+Para crear un vector columna
+```{python}
+col = [[1],[5],[3]]
+col
+```
+
+En caso de una matriz cualquiera
+```{python}
+M = [[1,2,3], [4,5,6], [7,8,9]]
+M
+```
+
+
+#### Acceder a un elmento de la matriz y array de numpy
+
+Para obtener un elemento, se utiliza la sintáxis siguiente
+
+```{python}
+M[1][1]
+```
+
+El primer corchete indica la fila y el segundo la columna del elemento. Además es necesario considerar que, en lugar de R, python posiciona sus elementos empezando desde el 0. Por ello el elemento $m_{11}$ es igual a
+
+```{python}
+M[0][0]
+```
+
+Para obtener una fila, solo basta colocar un corcheta indicando la posición de la fila que queremos.
+
+```{python}
+M[2]
+```
+
+En el caso de querer obtener una columna, el proceso es un poco más complejo. Lo anterior visto es una forma de declaración de matrices de manera sencilla. Se volverán a realizar, usando plenamente **numpy**, para tener una mayor manipulación de la matriz.
+
+```{python}
+import numpy as np
+M = np.array([[1,2,3],[4,5,6],[7,8,9]])
+M
+```
+
+Habiendo realizado las líneas anteriores, M, de ser una lista de python, pasa a ser un array de numpy.
+
+De la función **np.array()** podemos resaltar que tiene un parámetro llamado **dtype** en el cual podemos indicar el tipo de dato de la matriz: int, float, complex...
+
+```{python}
+M = np.array([[1,2,3],[4,5,6],[7,8,9]], dtype = complex)
+M
+
+M = np.array([[1,2,3],[4,5,6],[7,8,9]], dtype = float)
+M
+```
+
+Con esta sintáxis, al momento de querer extraer un elemento o fila, podemos usar las expresiones anteriores, sin embargo existe una manera distinta para obtener las filas y columnas de una matriz
+
+```{python}
+M = np.array([[1,2,3],[4,5,6],[7,8,9]])
+
+M[1,:] # Obtiene la segunda fila
+M[:,0] # Obtiene la primer columna
+```
+
+#### Matriz nula y matriz de unos
+
+Para crear una matriz nula se usa la función **np.zeros((fil,col))**. Para indicar el número de filas y columnas se pasa como parámetro una tupla con ambos valores, siendo el primero el número de filas
+
+```{python}
+print(np.zeros((3,4)))
+```
+
+Para crear una matriz con solamente valores de uno, se usa la función **np.ones((fil,col))**
+
+```{python}
+print(np.ones((5,4)))
+```
+
+#### Matrices diagonales
+
+Declarar una matriz diagonal en python es parecido a hacerlo en R. Se hará uso de la función **np.diag()**
+
+```{python}
+N = np.diag([1,2,3,4])
+N
+```
+
+Y para consultar los elementos de la diagonal principal de una matriz, se hace uso de la misma función
+
+```{python}
+np.diag(N)
+```
+
+#### Dimensión de una matriz
+
+Para poder conocer el orden de una matriz, utilizamos la función **np.shape()**
+
+```{python}
+np.shape(M)
+```
+
+
+## Manipulación de matrices con python
+
+#### Suma de los elementos de una matriz
+
+Para obtener el resultado de sumar todos los elementos de una matriz, usamos la función **np.sum()**
+
+```{python}
+M
+np.sum(M)
+```
+
+En caso de requerir sumar por filas o por columnas, debemos añadir el parámetro **axis**, el cual recibirá un 0 o 1, en donde 0 indica los elementos horizontales (filas), y 1 los elementos verticales (columnas)
+
+```{python}
+np.sum(M, axis = 0)
+np.sum(M, axis = 1)
+```
+
+#### Producto de los elementos de una matriz
+
+Para calcular la multiplicación de todos los elementos de una matriz, usamos la función **np.prod()**
+
+```{python}
+np.prod(M)
+```
+
+#### Media aritmética de los elementos de una matriz
+
+La librería **numpy** nos provee una función parecida a la de R, la cual permite obtener la media aritmética
+
+```{python}
+np.mean(M)
+```
+
+Además de que popdemos sacar la media de cada fila o columna.
+
+```{python}
+np.mean(M, axis = 0) #Por filas
+np.mean(M, axis = 1) #Por columnas
+```
+
+## Operaciones con matrices
+
+#### Transpuesta de una matriz
+
+Para calcular la transpuesta de una matriz se utiliza la función **.transpose()**. En lugar de que la función reciba como parámetro a la matriz, del objeto matriz se obtiene dicho método 
+
+```{python}
+print(M.transpose())
+```
+
+#### Traza de una matriz
+
+Para obtener la traza de una matriz, es decir, la suma de los elementos de la diagonal principal, usamos la función **.trace()**
+
+```{python}
+print(M.trace())
+```
+
+#### Suma de matrices 
+
+```{python}
+A = np.array([[3,1],[5,-2]])
+B = np.array([[3,-6],[6,7]])
+print(A+B)
+```
+
+#### Producto por un escalar
+
+```{python}
+print(A*5)
+```
+
+#### Producto de matrices
+
+Para multiplicar 2 matrices, se usa la sintáxis siguiente
+
+```{python}
+print(A.dot(B))
+```
+
+Si se utiliza el símbolo asterístico para indicar la multiplicación como es común, ésta se dara elemento por elemento
+
+```{python}
+A*B
+```
+
+#### Potencia de una matriz
+
+```{python}
+print(np.linalg.matrix_power(A,5))
+```
+
+
+## Rango e inversa
+
+#### Rango de una matriz
+
+Para calcular el rango, el cual se define como el número de filas no nulas de una matriz equivalente (escalonada o escalonada reducida), se usará la función **np.linalg.matrix_rank()**
+
+```{python}
+np.linalg.matrix_rank(A)
+np.linalg.matrix_rank(A)
+```
+
+#### Inversa de una matriz
+
+Esta se obtiene con a función **np.linalg.inv()**
+
+```{python}
+print(np.linalg.inv(A))
+
+print(np.linalg.inv(A).dot(A)) #Comprobar si el producto con la inversa da la identidad
+```
+

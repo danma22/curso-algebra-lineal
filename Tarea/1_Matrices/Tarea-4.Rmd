@@ -1,0 +1,343 @@
+---
+title: "Tarea 4"
+subtitle: "Matrices con R, Python y Octave"
+author: "Daniel Eduardo Macias Estrada"
+date: "9/8/2020"
+output: 
+  pdf_document:
+    latex_engine: pdflatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(octave = "C:/Octave/Octave-5.2.0/mingw64/bin/octave-cli-5.2.0.exe"))
+library(reticulate)
+```
+
+Resuelve todas estas preguntas haciendo uso de todos los lenguajes.
+
+## Pregunta 1
+
+Consideremos las matrices
+
+$$A = \begin{pmatrix}
+0 & 1 & -2\\
+2 & 3 & -1\\
+1 & -1 & 5
+\end{pmatrix} \qquad B = \begin{pmatrix}
+1 & -1 & 2 & 1\\
+2 & -2 & 2 & -2\\
+-1 & 2 & 1 & 2
+\end{pmatrix} \qquad C = \begin{pmatrix}
+2\\
+0\\
+1\\
+-4
+\end{pmatrix}$$
+
+Realizar las operaciones siguientes:
+
+* $A\cdot B$
+* $B\cdot C$
+* $B^t$
+* $B^{t}\cdot A$
+* $C^{t}\cdot B^t$
+
+Resultados
+
+### $A\cdot B$
+
+R
+```{r}
+A = rbind(c(0,1,-2), c(2,3,-1), c(1,-1,5))
+B = rbind(c(1,-1,2,1), c(2,-2,2,-2), c(-1,2,1,2))
+A%*%B
+```
+
+Python
+```{python}
+import numpy as np
+A = np.array([[0,1,-2],[2,3,-1],[1,-1,5]])
+B = np.array([[1,-1,2,1],[2,-2,2,-2],[-1,2,1,2]])
+print(A.dot(B))
+```
+
+Octave 
+```{octave}
+A = [0 1 -2; 2 3 -1; 1 -1 5]
+B = [1 -1 2 1; 2 -2 2 -2; -1 2 1 2]
+A*B
+```
+
+
+### $B\cdot C$
+
+R
+```{r}
+C = rbind(c(2),c(0),c(1),c(-4))
+B%*%C
+```
+
+Python
+```{python}
+C = np.array([[2],[0],[1],[-4]])
+print(B.dot(C))
+```
+
+Octave
+```{octave}
+B = [1 -1 2 1; 2 -2 2 -2; -1 2 1 2]
+C = [2; 0; 1; -4]
+B*C
+```
+
+
+### $B^t$
+
+R
+```{r}
+t(B)
+```
+
+Python
+```{python}
+print(B.transpose())
+```
+
+Octave
+```{octave}
+B = [1 -1 2 1; 2 -2 2 -2; -1 2 1 2]
+B'
+```
+
+
+### $B^t\cdot A$
+
+R
+```{r}
+t(B)%*%A
+```
+
+Python
+```{python}
+B.transpose().dot(A)
+```
+
+Octave
+```{octave}
+A = [0 1 -2; 2 3 -1; 1 -1 5]
+B = [1 -1 2 1; 2 -2 2 -2; -1 2 1 2]
+B'*A
+```
+
+
+### $C^t\cdot B^t$
+
+R
+```{r}
+t(C)%*%t(B)
+```
+
+Python
+```{python}
+C.transpose().dot(B.transpose())
+```
+
+Octave
+```{octave}
+B = [1 -1 2 1; 2 -2 2 -2; -1 2 1 2]
+C = [2; 0; 1; -4]
+C'*B'
+```
+
+
+## Pregunta 2
+
+Considera las matrices
+
+$$A = \begin{pmatrix}
+0 & 1\\
+0 & 1
+\end{pmatrix} \qquad B = \begin{pmatrix}
+-1 & -1\\
+0 & 0
+\end{pmatrix}$$
+
+Demostrar que
+
+$$(A + B)^2 \neq A^2 + 2AB + B^2$$
+
+pero que en cambio
+
+$$(A + B)^3 = A^3 + 3A^2B + 3AB^2 + B^3$$
+
+Resultados 
+
+### $(A + B)^2 \neq A^2 + 2AB + B^2$
+
+R
+```{r}
+library(Biodem)
+A = rbind(c(0,1),c(0,1))
+B = rbind(c(-1,-1),c(0,0))
+
+C = mtx.exp(A+B,2)
+D = mtx.exp(A,2) + 2*(A%*%B) + mtx.exp(B,2)
+C
+D
+C == D
+```
+
+Python
+```{python}
+A = np.array([[0,1],[0,1]])
+B = np.array([[-1,-1],[0,0]])
+
+C = np.linalg.matrix_power(A+B,2)
+D = np.linalg.matrix_power(A,2) + 2*(A.dot(B)) + np.linalg.matrix_power(B,2)
+print(C)
+print(D)
+C == D
+```
+
+Octave
+```{octave}
+A = [0 1; 0 1]
+B = [-1 -1; 0 0]
+
+C = (A+B)^2
+D = A^2 + 2*A*B + B^2
+
+C == D
+```
+
+
+### $(A + B)^3 = A^3 + 3A^2B + 3AB^2 + B^3$
+
+R
+```{r}
+C = mtx.exp(A+B,3)
+D = mtx.exp(A,3) + 3*(mtx.exp(A,2)%*%B) + 3*(A%*%mtx.exp(B,2)) + mtx.exp(B,3)
+C
+D
+C == D
+```
+
+Python
+```{python}
+C = np.linalg.matrix_power(A+B,3)
+D = (np.linalg.matrix_power(A,3) 
+    + 3*(np.linalg.matrix_power(A,2).dot(B)) 
+    + 3*(A.dot(np.linalg.matrix_power(B,2))) 
+    + np.linalg.matrix_power(B,3))
+
+print(C)
+print(D)
+
+C == D
+```
+
+Octave
+```{octave}
+A = [0 1; 0 1]
+B = [-1 -1; 0 0]
+
+C = (A+B)^3
+D = A^3 + 3*A^2*B + 3*A*B^2 + B^3
+
+C == D
+```
+
+
+
+## Pregunta 3
+
+Calcula el rango de las siguientes matrices
+
+$$A = \begin{pmatrix}
+-1 & 1 & -2\\
+1 & 1 & 0\\
+2 & 1 & 1
+\end{pmatrix} \qquad B = \begin{pmatrix}
+-1 & 2 & 3 & 4 & 5\\
+1 & 2 & 1 & 3 & 2\\
+0 & 4 & 4 & 7 & 7
+\end{pmatrix}$$
+
+Resultados
+
+R
+```{r}
+A = rbind(c(-1,1,-2),c(1,1,0),c(2,1,1))
+B = rbind(c(-1,2,3,4,5),c(1,2,1,3,2),c(0,4,4,7,7))
+
+arank = qr(A)$rank
+brank = qr(B)$rank
+
+sprintf("El rango de la matriz A es: %s", arank)
+
+sprintf("El rango de la matriz B es: %s", brank)
+```
+
+Python
+```{python}
+A = np.array([[-1,1,-2],[1,1,0],[2,1,1]])
+B = np.array([[-1,2,3,4,5],[1,2,1,2,3],[0,4,4,7,7]])
+
+print("El rango de la matriz A es: " + str(np.linalg.matrix_rank(A)))
+
+print("El rango de la matriz B es: " + str(np.linalg.matrix_rank(B)))
+```
+
+Octave
+```{octave}
+A = [-1 1 -2; 1 1 0; 2 1 1]
+B = [-1 2 3 4 5; 1 2 1 2 3; 0 4 4 7 7]
+
+disp("El rango de la matriz A es:")
+disp(rank(A))
+
+disp("El rango de la matriz B es:")
+disp(rank(B))
+```
+
+
+## Pregunta 4
+
+Calcula la inversa de las siguientes matrices
+
+$$A = \begin{pmatrix}
+1 & 2 & 0\\
+0 & 1 & -1\\
+0 & 0 & 2
+\end{pmatrix} \qquad B = \begin{pmatrix}
+i & 0 & 0\\
+0 & 0 & 1\\
+1 & i & 0
+\end{pmatrix}$$
+
+Resultados
+
+R
+```{r}
+A = rbind(c(1,2,0),c(0,1,-1),c(0,0,2))
+B = rbind(c(0+1i, 0+0i, 0+0i), c(0+0i, 0+0i, 1+0i), c(1+0i, 0+1i, 0+0i))
+
+sprintf("La inversa de la matriz A: %s", solve(A))
+sprintf("La inversa de la matriz B: %s", solve(B))
+```
+
+Python
+```{python}
+A = np.array([[1,2,0],[0,1,-1],[0,0,2]])
+B = np.array([[complex(0,1), 0, 0],[0, 0, 1],[1, complex(0,1), 0]], dtype = complex)
+
+print("La inversa de la matriz A: ")
+np.linalg.inv(A)
+
+print("La inversa de la matriz B: ")
+np.linalg.inv(B)
+```
+
+
+
