@@ -1,0 +1,236 @@
+---
+title: "Tarea 5"
+subtitle: "Ecuaciones y sistemas lineales"
+author: "Daniel Eduardo Macias Estrada"
+date: "25/8/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(octave = "C:/Octave/Octave-5.2.0/mingw64/bin/octave-cli-5.2.0.exe"))
+library(reticulate)
+```
+
+## Ejercicio 1
+
+Resolver el siguiente sistema de ecuaciones lineales:
+
+$$\left\{ \begin{matrix}
+  x_1 & - & 2x_2 & + & x_3 & - & x_4 & = & 3\\
+  2x_1 & - & 3x_2 & + & 2x_3 & - & x_4 & = & -1\\
+  3x_1 & - & 5x_2 & + & 3x_3 & - & 4x_4 & = & 3\\
+  -x_1 & + & x_2 & - & x_3 & + & 2x_4 & = & 5
+\end{matrix} \right .$$
+
+### Resultado
+
+```{r}
+# Comprobación con R
+
+A = matrix(c(1,-2,1,-1,2,-3,2,-1,3,-5,3,-4,-1,1,-1,2), nrow = 4, byrow = TRUE)
+A
+
+rangoA = qr(A)$rank
+
+AB = rbind(c(1,-2,1,-1,3),c(2,-3,2,-1,-1),c(3,-5,3,-4,3),c(-1,1,-1,2,5))
+AB
+
+rangoAB = qr(AB)$rank
+
+rangoA == rangoAB
+```
+
+
+## Ejercicio 2
+
+Resolver la siguiente ecuación matricial: 
+
+$$AX+B = CX-X+D$$
+
+donde
+
+#### Apartado (a)
+
+$$A = \begin{pmatrix}
+1 & 0\\
+0 & -1
+\end{pmatrix}, \quad B = \begin{pmatrix}
+1 & 3\\
+2 & 0
+\end{pmatrix}, \quad C = \begin{pmatrix}
+4 & -2\\
+-3 & -5
+\end{pmatrix}, \quad D = \begin{pmatrix}
+1 & 3\\
+4 & -2
+\end{pmatrix}$$
+
+#### Apartado (b)
+
+$$A = \begin{pmatrix}
+1 & 2 & 1\\
+0 & -3 & 1\\
+1 & 1 & 1
+\end{pmatrix}, \quad B = \begin{pmatrix}
+1 & 3 & 0\\
+0 & 2 & 0\\
+-1 & 0 & 1
+\end{pmatrix}, \quad C = \begin{pmatrix}
+3 & 0 & 2\\
+-2 & 1 & -1\\
+-1 & 1 & 2
+\end{pmatrix}, \quad D = \begin{pmatrix}
+1 & 3 & 5\\
+4 & 0 & -2\\
+0 & 0 & 1
+\end{pmatrix}$$
+
+### Resultado
+
+Primero se despejará $X$ para poder operar con los valores dados
+
+$$AX + B = CX - X + D \qquad \implies \qquad AX - CX + X = D - B$$
+$$(A - C + I_{n})X = D - B \qquad \implies \qquad (A - C + I_{n})^{-1}(A - C + I_{n})X = (A - C + I_{n})^{-1}(D - B)$$
+
+$$X = (A - C + I_{n})^{-1}(D-B)$$
+
+Sabiendo el valor de $X$, realizaremos las operaciones correspondientes
+
+
+#### Apartado (a)
+
+
+Ahora pasemos a comprobar nuestro resultado a mano con ayuda de Python
+
+```{python}
+import numpy as np
+A = np.array([[1,0],[0,-1]])
+B = np.array([[1,3],[2,0]])
+C = np.array([[4,-2],[-3,-5]])
+D = np.array([[1,3],[4,-2]])
+
+E = A - C + np.diag([1,1])
+E
+
+F = np.linalg.inv(E)
+F
+
+G = D - B
+G
+
+X = F.dot(G)
+X
+```
+
+
+#### Apartado (b)
+
+Enseguida mostraremos la comprobación de las operaciones anteriores
+
+```{python}
+A = np.array([[1,2,1],[0,-3,1],[1,1,1]])
+B = np.array([[1,3,0],[0,2,0],[-1,0,1]])
+C = np.array([[3,0,2],[-2,1,-1],[-1,1,2]])
+D = np.array([[1,3,5],[4,0,-2],[0,0,1]])
+
+E = A - C + np.diag([1,1,1])
+E
+
+F = np.linalg.inv(E)
+F
+
+G = D - B
+G
+
+X = F.dot(G)
+X
+
+```
+
+
+
+## Ejercicio 3
+
+Di de qué tipo de sistema se trata y, en caso de ser compatible, resuélvelo:
+
+#### Apartado (a)
+
+$$\left \{ \begin{matrix}
+6x_1 & - & 3x_2 & - & 3x_3 & + & 2x_4 & = & 32\\
+x_1 & - & 2x_2 & - & 2x_3 & + & x_4 & = & 4\\
+x_1 & - & x_2 & - & x_3 & + & x_4 & = & 6\\
+x_1 & + & x_2 & + & x_3 & - & x_4 & = & 5
+\end{matrix} \right .$$
+
+Comprobación con Octave
+
+```{octave}
+A = [6 -3 -3 2; 1 -2 -2 1; 1 -1 -1 1; 1 1 1 -1]
+AB = [6 -3 -3 2 32; 1 -2 -2 1 4; 1 -1 -1 1 6; 1 1 1 -1 5]
+
+ranA = rank(A)
+ranAB = rank(AB)
+
+ranA == ranAB
+```
+
+#### Apartado (b)
+
+$$\left \{ \begin{matrix}
+x_1 & 2x_2 & 3x_3 & = & 4\\
+8x_1 & 7x_2 & 6x_3 & = & 5\\
+9x_1 & 11x_2 & 10x_3 & = & 12
+\end{matrix} \right .$$
+
+Comprobación con Octave
+
+```{octave}
+A = [1 2 3; 8 7 6; 9 11 10]
+AB = [1 2 3 4; 8 7 6 5; 9 11 10 12]
+
+ranA = rank(A)
+ranAB = rank(AB)
+
+ranA == ranAB
+```
+
+
+#### Apartado (c)
+
+$$\left \{ \begin{matrix}
+x_1 & + & 2x_2 & + & 3x_3 & = & 4\\
+ & - & x_2 & + & 2x_3 & = & 0\\
+x_1 & - & 3x_2 & + & 13x_3 & = & -1
+\end{matrix} \right .$$
+
+```{octave}
+A = [1 2 3; 0 -1 2; 1 -3 13]
+AB = [1 2 3 4; 0 -1 2 0; 1 -3 13 -1]
+
+ranA = rank(A)
+ranAB = rank(AB)
+
+ranA == ranAB
+```
+
+
+#### Apartado (d)
+
+$$\left \{ \begin{matrix}
+3x_1 & + & x_2 & + & 4x_3 & + & x_4 & = & 0\\
+5x_1 & & & + & 2x_3 & + & 6x_4 & = & 0\\
+ & - & x_2 & & & - & 2x_4 & = & 0\\
+ 3x_1 & + & 2x_2 & + & 3x_3 & + & x_4 & = & 0
+\end{matrix} \right .$$
+
+```{octave}
+A = [3 1 4 1; 5 0 2 6; 0 -1 0 -2; 3 2 3 1]
+AB = [3 1 4 1 0; 5 0 2 6 0; 0 -1 0 -2 0; 3 2 3 1 0]
+
+ranA = rank(A)
+ranAB = rank(AB)
+
+ranA == ranAB
+```
+

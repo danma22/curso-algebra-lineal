@@ -1,0 +1,175 @@
+---
+title: "Sistemas compatibles determinados en R"
+author: "Daniel Eduardo Macias Estrada"
+date: "27/8/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Resolución de un sistema compatible determinado con la función solve
+
+Dado el sistema de ecuaciones lineales
+
+$$\left \{ \begin{matrix}
+a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n & = & b_1\\
+a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n & = & b_2\\
+\vdots & \ & \vdots\\
+a_{m1}x_1+a_{m2}x_2+\cdots+a_{mn}x_n & = & b_m\\
+\end{matrix} \right .$$
+
+Al representarlo en su forma matricial $AX=b$, podemos darle una solución con el uso de la función **solve(A,b)**, la cual funciona si, y solo si, el sistema de ecuaciones es compatible determinado.
+
+### Ejemplo 1
+
+Dado el siguiente sistema de ecuaciones lineales, calculemos su solución
+
+$$\left \{ \begin{matrix}
+x_1 & + & x_2 & + & 2x_3 & = & 9\\
+2x_1 & + & 4x_2 & - & 3x_3 & = & 1\\
+3x_1 & + & 6x_2 & - & 5x_3 & = & 0
+\end{matrix} \right .$$
+
+En este caso, tanto el número de ecuaciones, así como el número de incógnitas es 3
+
+En su forma matricial, se expresaría en R como:
+
+```{r}
+A = rbind(c(1,1,2), c(2,4,-3),c(3,6,-5))
+b = c(9,1,0)
+Ab = cbind(A,b)
+```
+
+Observamos en el anterior chunk que la función **cbind()** es usada para unir dos matrices en columnas, solo si la dimensión de ambas lo permite. En le documento de **Matrices con R** se menciona la misma función, pero con un uso distinto.
+
+Mediante el teorema de Rouché-Frobenius, y con ayuda de R, verificamos si el rango de la matriz $A$ es igual al rango de la matriz Ampliada, para saber si el sistema es compatible
+
+```{r}
+qr(A)$rank == qr(Ab)$rank
+```
+
+Ahora nos aseguramos si este es igual al número de incógnitas, el cual es 3, para saber si es un sistema compatible determinado.
+
+```{r}
+qr(A)$rank == 3
+```
+
+De esta manera, es posible aplicar la funcíón **solve()** a este caso, por lo que procedemos a realizarla
+
+```{r}
+solve(A,b)
+```
+
+La solución que nos devuelve, se puede expresar como:
+
+$$x_1 = 1, \quad x_2 = 2, \quad x_3 = 3$$
+Una forma de comprobar este resultado es sustituyendo días variables en cada una de las ecuaciones del sistema y verificar la igualdad en todas.
+
+Otra forma de comprobar el resultado, es realizando un producto de matrices con la matriz A y el vector de resultados
+
+```{r}
+solution = c(1,2,3)
+A%*%solution
+```
+
+o de la siguiente forma
+
+```{r}
+A%*%solution == b
+```
+
+Así, nos damos cuenta que el vector (1,2,3) es correcto
+
+## Resolución de un sistema compatible determinado con la libreria matlib
+
+Otra forma para dar solución a un sistema determinado, se da gracias a la libreria **Matlib**, la cual ofrece variedad de funciones útiles en resolver sistemas de ecuaciones lineales, sobre todos aquellos con 2 o 3 ecuaciones
+
+### Ejemplo 2
+
+Dada el siguiente sistema de ecuaciones lineales
+
+$$\left \{ \begin{matrix}
+2x_1 & + & 2x_2 & = & 1\\
+-x_1 & + & x_2 & = & 2
+\end{matrix} \right .$$
+
+Al expresarlo en su forma matricial, obtenemos
+
+```{r}
+A = rbind(c(2,2),c(-1,1))
+b = c(1,2)
+Ab = cbind(A,b)
+```
+
+Una vez tenemos la forma matricial, podemos mostrar el sistema con la función **showEqn()** de la libreria **matlib**
+
+```{r}
+library(matlib)
+showEqn(A,b)
+```
+
+Esta misma libreria nos permite obtener el rango de de una matriz con la función **R()**
+
+```{r}
+R(A)
+
+R(Ab)
+```
+
+Gracias a esto podemos determinar el tipo de sistema con el que se trabaja. En este caso, al ser igual los rangos de ambas matrices, del mismo modo que es igual al número de incógnitas, podemos decir que el sistema es compatible determinado.
+
+Por otro lado, con la función **all.equal()** es posible comprobar que un sistema es compatible. Esta función compara los rangos de matrices, y determinar si son iguales
+
+```{r}
+all.equal(R(A),R(Ab))
+```
+
+Finalmente, con la función **Solve()** de matlib podemos resolver el sistema.
+
+```{r}
+Solve(A, b, fractions = TRUE)
+```
+
+Cabe resaltar que el parámetro **fractions**, que recibe un valor booleano, permite mostrar las soluciones no enteras en forma de fracción, siempre que exista
+
+## Representación de sistemas con R
+
+Otro punto importante de la libreria **matlib** es el de representar de manera gráfica las ecuaciones de un sistema lineal. Con las funciones **plotEqn()** para dibujar un sistema lineal de 2 incógnitas, y **plotEqn3d()** para dibujar un sistema lineal de 3 incógnitas.
+
+### Ejemplo 2
+
+En caso de tener un sistema de dos ecuaciones con dos incógnitas
+
+```{r}
+showEqn(A, b)
+```
+
+Su representación sería
+
+```{r}
+plotEqn(A, b)
+points(-3/4, 5/4, col = "turquoise1", pch = 19)
+```
+
+La solución que anteriormente habíamos encontrado
+
+$$\left \{ \begin{matrix}
+x_1 & = & -\frac{3}{4}\\
+x_2 & = & \frac{5}{4}
+\end{matrix} \right .$$
+
+es el punto donde ambas rectas intersectan
+
+Además, con la función **points()**, se puede indicar un punto dentro del plano. En este caso, se coloco, en el punto de intersección.
+
+### Ejemplo 3 
+
+En caso de tener un sistema de tres ecuaciones y 2 variables, como el siguiente caso:
+
+$$\left \{ \begin{matrix}
+4x & + & 2y & = & 3\\
+x & - & 2y & = & 2\\
+3x & + & 4y & = & 1
+\end{matrix} \right .$$

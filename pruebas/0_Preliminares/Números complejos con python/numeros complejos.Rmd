@@ -64,3 +64,17 @@ z2+z1
 z1-z2
 ```
 
+
+## Pruebas xd
+
+unas pruebitas
+
+```{python}
+x = complex(1,1)
+y = complex(-7/10,1/10)
+k = complex(-7/5,-4/5)
+t = complex(-11/10,3/10)
+
+x + y + k - t
+```
+

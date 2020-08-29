@@ -43,7 +43,7 @@ M
 
 #### Acceder a un elmento de la matriz y array de numpy
 
-Para obtener un elemento, se utiliza la sintáxis siguiente
+Para obtener un elemento, se utiliza la sintaxis siguiente
 
 ```{python}
 M[1][1]
@@ -81,7 +81,7 @@ M = np.array([[1,2,3],[4,5,6],[7,8,9]], dtype = float)
 M
 ```
 
-Con esta sintáxis, al momento de querer extraer un elemento o fila, podemos usar las expresiones anteriores, sin embargo existe una manera distinta para obtener las filas y columnas de una matriz
+Con esta sintaxis, al momento de querer extraer un elemento o fila, podemos usar las expresiones anteriores, sin embargo existe una manera distinta para obtener las filas y columnas de una matriz
 
 ```{python}
 M = np.array([[1,2,3],[4,5,6],[7,8,9]])
@@ -203,7 +203,7 @@ print(A*5)
 
 #### Producto de matrices
 
-Para multiplicar 2 matrices, se usa la sintáxis siguiente
+Para multiplicar 2 matrices, se usa la sintaxis siguiente
 
 ```{python}
 print(A.dot(B))
