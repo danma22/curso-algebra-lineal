@@ -1,0 +1,58 @@
+---
+title: "Tema 2 - Ejercicio 1"
+author: "Daniel Eduardo Macias Estrada"
+date: "29/8/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Enunciado
+
+Dado el sistema de ecuaciones lineales
+
+$$\left \{ \begin{matrix}
+4x & + & 2y & = & 3\\
+x & - & 2y & = & 2\\
+3x & + & 4y & = & 1
+\end{matrix} \right .$$
+
+* Comprobar que, efectivamente, se trata de un sistema compatible determinado haciendo uso del Teorema de Rouché-Frobenius 
+
+* Calcular su solución
+
+En este caso, usaremos la librería **matlib** para realizar los procedimientos necesarios
+
+Primeramente, expresaremos el sistema de forma matricial, declarando la matriz de coeficientes y la de términos independientes
+
+```{r comment=NA}
+library(matlib)
+A = rbind(c(4,2),c(1,-2),c(3,4))
+b = c(3,2,1)
+Ab = cbind(A,b)
+
+showEqn(A,b)
+```
+
+Una vez la forma matricial del sistema, podemos verficiar que se trata de un sistema compabible determinado, para ello, compararemos los rangos de la matriz **A** y la matriz ampliada.
+
+```{r comment=NA}
+all.equal(R(A),R(Ab))
+```
+
+Ahora que sabemos que ambos rangos son iguales, y el sistema es compatible, queda comparar el rango con el número de incógnitas (en este caso 2)
+
+```{r comment=NA}
+all.equal(R(A),2)
+```
+
+Conociendo que el sistema es compatible determinado. Pasamos a obtener el resultado
+
+```{r comment=NA}
+Solve(A, b, fractions = TRUE)
+```
+

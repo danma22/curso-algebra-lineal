@@ -1,0 +1,109 @@
+---
+title: "Sistemas de ecuaciones lineales y ecuaciones matriciales en Octave"
+author: "Daniel Eduardo Macias Estrada"
+date: "5/9/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(octave = "C:/Octave/Octave-5.2.0/mingw64/bin/octave-cli-5.2.0.exe"))
+```
+
+## Introducción
+Este documento tiene como fin el mostrar las cuestiones básicas relacionadas al manejor y resolución de sistemas de ecuaciones lineales y el proceso para poder darle solución a ecuaciones matriciales. Esto con ayuda del lenguaje de programación R
+
+Toda la información recabada está basado enteramente de la obra de Juan Gabrial Gomila Salas, CEO de Frogames, Matemático, Data Scientist & Game Designer
+
+## Sistema compatible determinado
+
+Dada el sistema de ecuaciones lineales:
+
+$$\left \{ \begin{matrix}
+a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n & = & b_1\\
+a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n & = & b_1\\
+\vdots & \ & \vdots\\
+a_{m1}x_1+a_{m2}x_2+\cdots+a_{mn}x_n & = & b_m
+\end{matrix} \right .$$
+
+Al pasarlo a su forma matricial, $AX = b$, podremos resolverlo de forma sencilla con la función **linsolve(A,b)** siempre que se trata de un sistema compatible determinado
+
+### Ejemplo 1
+
+Dado el sistema de ecuaciones lineales, calculemos su solución:
+
+$$\left \{ \begin{matrix}
+x_1 & + & x_2 & + & 2x_3 & = & 9\\
+2x_1 & + & 4x_2 & - & 3x_3 & = & 1\\
+3x_1 & + & 6x_2 & - & 5x_3 & = & 0
+\end{matrix} \right .$$
+
+Se trata de un sistema de ecuaciones de 3 ecuaciones y 3 incógnitas
+
+```{octave}
+A = [1 1 2; 2 4 -3; 3 6 -5];
+b = [9; 1; 0];
+AB = [A b];
+```
+
+Comprobamos primero que el sistema es compatible, con el Teorema de Rouché-Frobenius, esto comparando el rango de la matriz $A$ y de la matriz ampliada
+
+```{octave}
+A = [1 1 2; 2 4 -3; 3 6 -5];b = [9; 1; 0];AB = [A b];
+rank(A) == rank(AB);
+```
+
+Ahora tenemos que comprobar que el sistema es compatible determinado, por lo que el rango debe ser igual al número de incógnitas.
+
+```{octave}
+A = [1 1 2; 2 4 -3; 3 6 -5];
+rank(A) == 3;
+```
+
+Finalmente pasamos a resolverlo
+
+```{octave}
+A = [1 1 2; 2 4 -3; 3 6 -5];b = [9; 1; 0];
+x = linsolve(A,b);
+x
+```
+
+Para comprobar que este es el resultado
+
+```{octave}
+A = [1 1 2; 2 4 -3; 3 6 -5];b = [9; 1; 0];
+x = [1; 2; 3];
+A*x == b;
+```
+
+
+## Representación de sistemas
+
+El observar a detalle una representación visual de nuestro sistema, nos puede ofrecer mucha información con un solo vistazo
+
+### Ejemplo 2
+
+Dado el sistema de 2 ecuaciones y 2 incógnitas:
+
+$$\left \{ \begin{matrix}
+2x & + & 2y & = & 1\\
+-x & + & y & = & 2
+\end{matrix} \right .$$
+
+Necesitamos representar cada ecuación de forma explícita, es decir, de manera que aislemos una variable
+
+$$\left \{ \begin{matrix}
+y & = & \frac{1-2x}{2}\\
+y & = & 2+x
+\end{matrix} \right .$$
+
+Representamos gráficamente el sistema del siguiente modo:
+
+```{octave}
+x = linspace(-10,10,100);
+y1 = (1-2*x)/2;
+y2 = 2+x;
+plot(x,y1,x,y2);
+```
+
+y con esto, al ejecutarlo en **GNU Octave**, obtenemos
