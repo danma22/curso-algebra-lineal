@@ -1,0 +1,191 @@
+---
+title: "Tarea 8"
+subtitle: "Factorización LU "
+author: "Daniel Eduardo Macias Estrada"
+date: "3/12/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(octave = "/usr/bin/octave"))
+library(reticulate)
+```
+
+## Pregunta 1
+
+Encuentra las factorizaciones $A=LU$ o $PA=LU$ de las siguientas matrices
+
+### A)
+
+$$A_1 = \begin{pmatrix}
+0 & 2 & -3 & 4\\
+0 & 0 & -5 & -1\\
+5 & -1 & -2 & 0\\
+-2 & 0 & 4 & 6
+\end{pmatrix}$$
+
+Resultado con R
+```{r, comment = NA}
+library(matlib)
+A = rbind(c(0,2,-3,4), c(0,0,-5,-1), c(5,-1,-2,0), c(-2,0,4,6))
+luA = LU(A)
+luA$L
+luA$U
+luA$P
+# Como el resultado de U no es una matriz superior, se comprueba que al menos el resultado
+# del producto da la matriz A
+luA$L%*%luA$U
+```
+
+Resultado con Python
+```{python, comment = NA}
+import numpy as np
+import scipy.linalg
+A = np.array([[0,2,-3,4],[0,0,-5,-1],[5,-1,-2,0],[-2,0,4,6]])
+P,L,U = scipy.linalg.lu(A)
+L
+U
+```
+
+Resultado con Octave
+```{octave, comment = NA}
+A = [0 2 -3 4; 0 0 -5 -1; 5 -1 -2 0; -2 0 4 6];
+[L U P] = lu(A)
+```
+
+Comprobación de los resultados a mano con R
+```{r, comment = NA}
+U = rbind(c(1,0,-2,-3),c(0,1,-8,-15),c(0,0,1,1/5),c(0,0,0,1))
+L = rbind(c(-2,0,0,0), c(5,-1,0,0), c(0,0,-5,0), c(0,2,13,157/5))
+PA = rbind(c(-2,0,4,6), c(5,-1,-2,0), c(0,0,-5,-1), c(0,2,-3,4))
+PA == L%*%U
+```
+
+
+### B)
+
+$$A_2 = \begin{pmatrix}
+1 & 2 & -1 & 4\\
+0 & -1 & 5 & 8\\
+2 & 3 & 1 & 4\\
+1 & -1 & 6 & 4
+\end{pmatrix}$$
+
+Resultado con R 
+```{r, comment = NA}
+A = rbind(c(1,2,-1,4), c(0,-1,5,8), c(2,3,1,4), c(1,-1,6,4))
+luA = LU(A)
+luA$L
+luA$U
+luA$P
+```
+
+Resultado con Python
+```{python, comment = NA}
+A = np.array([[1,2,-1,4],[0,-1,5,8],[2,3,1,4],[1,-1,6,4]])
+P,L,U = scipy.linalg.lu(A)
+L
+U
+P
+```
+
+Resultado con Octave
+```{octave, comment = NA}
+A = [1 2 -1 4; 0 -1 5 8; 2 3 1 4; 1 -1 6 4];
+[L U P] = lu(A)
+```
+
+Comprobación de los resultados a mano con Python
+```{python, comment = NA}
+U = np.array([[1,2,-1,4],[0,1,-5,-8],[0,0,1,6],[0,0,0,1]])
+L = np.array([[1,0,0,0],[0,-1,0,0],[2,-1,-2,0],[1,-3,-8,24]])
+A == L.dot(U)
+```
+
+
+### C)
+
+$$A_3 = \begin{pmatrix}
+2 & 4 & -2 & 0\\
+3 & 7 & 5 & -4\\
+-1 & 2 & -2 & 5\\
+6 & 1 & 0 & 2
+\end{pmatrix}$$
+
+Resultado con R
+```{r, comment = NA}
+A = rbind(c(2,4,-2,0), c(3,7,5,-4), c(-1,2,-2,5), c(6,1,0,2))
+luA = LU(A)
+luA$L
+luA$U
+luA$P
+```
+
+Resultado con Python
+```{python, comment = NA}
+A = np.array([[2,4,-2,0], [3,7,5,-4], [-1,2,-2,5], [6,1,0,2]])
+P,L,U = scipy.linalg.lu(A)
+L
+U
+P
+```
+
+Resultado con Octave
+```{octave, comment = NA}
+A = [2 4 -2 0; 3 7 5 -4; -1 2 -2 5; 6 1 0 2]
+[L U P] = lu(A)
+```
+
+Comprobación de los resultados a mano con Octave
+```{octave, comment = NA}
+U = [1 2 -1 0; 0 1 8 -4; 0 0 1 -3/5; 0 0 0 1];
+L = [2 0 0 0; 3 1 0 0; -1 4 -35 0; 6 -11 94 72/5];
+A = [2 4 -2 0; 3 7 5 -4; -1 2 -2 5; 6 1 0 2];
+L*U
+```
+
+
+### D)
+
+$$A_4 = \begin{pmatrix}
+0 & 2 & 3 & 1\\
+0 & 4 & -1 & 5\\
+2 & 0 & 3 & 1\\
+1 & -4 & 5 & 6
+\end{pmatrix}$$
+
+Resultado con R
+```{r, comment = NA}
+A = rbind(c(0,2,3,1), c(0,4,-1,5), c(2,0,3,1), c(1,-4,5,6))
+luA = LU(A)
+luA$L
+luA$U
+luA$P
+# Como el resultado de U no es una matriz superior, se comprueba que al menos el resultado
+# del producto da la matriz A
+luA$L%*%luA$U
+```
+
+Resultado con Python
+```{python, comment = NA}
+A = np.array([[0,2,3,1],[0,4,-1,5],[2,0,3,1],[1,-4,5,6]])
+P,L,U = scipy.linalg.lu(A)
+L
+U
+P
+```
+
+Resultado con Octave
+```{octave, comment = NA}
+A = [0 2 3 1; 0 4 -1 5; 2 0 3 1; 1 -4 5 6];
+[L U P] = lu(A)
+```
+
+Comprobación de los resultados a mano con R
+```{r, comment = NA}
+U = rbind(c(1,-4,5,6), c(0,1,-7/8,-11/8), c(0,0,1,21/5), c(0,0,0,1))
+L = rbind(c(1,0,0,0), c(2,8,0,0), c(0,4,5/2,0), c(0,2,19/4,-81/5))
+PA = rbind(c(1,-4,5,6), c(2,0,3,1), c(0,4,-1,5), c(0,2,3,1))
+PA == L%*%U
+```
