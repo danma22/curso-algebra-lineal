@@ -1,0 +1,51 @@
+---
+title: "Factorización LU en Octave"
+author: "Daniel Eduardo Macias Estrada"
+date: "2/12/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(octave = "/usr/bin/octave"))
+```
+
+## Introducción
+
+En el siguiente documento se explicará de manera breve, el manejo de la factorización LU con el lenguaje de programación Octave
+
+Toda la información recabada está basado enteramente de la obra de Juan Gabrial Gomila Salas, CEO de Frogames, Matemático, Data Scientist & Game Designer.
+
+## Uso de la factorización LU en Octave
+
+Para este caso, la función **lu()** es la que se usa para poder realizar la factorización LU,
+
+##3 Ejemplo 1
+
+Encontraremos la factorización LU de la sigiente matriz
+
+$$A = \begin{pmatrix}
+1 & 3 & 0 & -1\\
+2 & 1 & -1 & 5\\
+0 & -2 & 3 & -1\\
+1 & 1 & 3 & 1
+\end{pmatrix}$$
+
+```{octave}
+A = [1 3 0 -2; 2 1 -1 5; 0 -2 3 -1; 1 1 3 1];
+[L U P] = lu(A)
+```
+
+### Ejemplo 2
+
+$$A = \begin{pmatrix}
+0 & 1 & 3\\
+1 & 3 & -2\\
+-3 & -2 & -1
+\end{pmatrix}$$
+
+```{octave}
+A = [0 1 3; 1 3 -2; -3 -2 -1];
+[L U P] = lu(A)
+```
+

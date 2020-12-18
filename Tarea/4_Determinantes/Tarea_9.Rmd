@@ -1,0 +1,1047 @@
+---
+title: "Tarea 9´"
+subtitle: "Determinantes"
+author: "Daniel Eduardo Macias Estrada"
+date: "10/12/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = list(octave = "/usr/bin/octave"))
+library(reticulate)
+```
+
+## Pregunta 1
+
+Calcula las siguientes 
+
+### A)
+
+$$|A| = \begin{vmatrix}
+1 & 2 & 3 & 4\\
+0 & 1 & 0 & 1\\
+4 & 3 & 2 & 1\\
+3 & 3 & 0 & 5
+\end{vmatrix}$$
+
+Para empezar a resolver la determinante mostrada, debemos transformar esta matriz en una matriz triangular superior. Se realiza las siguientes operaciones, la cuales se muestran como matrices elementales
+
+$$F_{43} \bigg(-\frac{9}{10} \bigg) \cdot F_{42}(3) \cdot F_{32}(5) \cdot F_{41}(-3) \cdot F_{31}(-4) \cdot A = \begin{pmatrix}
+1 & 2 & 3 & 4\\
+0 & 1 & 0 & 1\\
+0 & 0 & -10 & -10\\
+0 & 0 & 0 & 5
+\end{pmatrix}$$
+
+La determinante de la matriz es igual al producto de los elementos de su diagonal principal
+
+$$|A| = (1) \cdot (1) \cdot (-10) \cdot (5) = -50$$
+
+Comprobación en Python
+```{python, comment = NA}
+import numpy as np
+A = np.array([[1,2,3,4],[0,1,0,1],[4,3,2,1],[3,3,0,5]])
+round(np.linalg.det(A))
+```
+
+
+### B)
+
+$$|B| = \begin{vmatrix}
+1 & 1 & 1 & -1\\
+0 & 1 & 3 & 1\\
+-1 & 0 & 2 & 1\\
+0 & 3 & 0 & 5
+\end{vmatrix}$$
+
+$$F_{34} \cdot F_{42}(-3) \cdot F_{32}(-1) \cdot F_{31}(1) \cdot B = \begin{pmatrix}
+1 & 1 & 1 & -1\\
+0 & 1 & 3 & 1\\
+0 & 0 & -9 & 2\\
+0 & 0 & 0 & -1
+\end{pmatrix}$$
+
+Como se ha realizado un intercambio entre las filas 3 y 4, el determinante cambia de signo
+
+$$|B| = -(1)(1)(-9)(-1) = -9$$
+Comprobación en Python
+```{python, comment = NA}
+B = np.array([[1,1,1,-1],[0,1,3,1],[-1,0,2,1],[0,3,0,5]])
+round(np.linalg.det(B))
+```
+
+### C)
+
+$$|C| = \begin{vmatrix}
+1 & 1 & 1 & -1 & 0\\
+0 & 1 & 3 & 1 & 0\\
+-1 & 0 & 2 & 1 & 0\\
+0 & 3 & 0 & 5 & 0\\
+1 & 2 & 3 & 4 & 5
+\end{vmatrix}$$
+
+$$F_{54}(-34) \cdot F_{45} \cdot F_{43}(-9) \cdot F_{53} \cdot F_{52}(-1) \cdot F_{42}(-3) \cdot F_{32}(-1) \cdot F_{51}(-1) \cdot F_{31}(1) \cdot C = \begin{pmatrix}
+1 & 1 & 1 & -1 & 0\\
+0 & 1 & 3 & 1 & 0\\
+0 & 0 & -1 & 4 & 5\\
+0 & 0 & 0 & -1 & 0\\
+0 & 0 & 0 & 0 & -45
+\end{pmatrix}$$
+
+$$|A| = (1)(1)(-1)(-1)(-45) = -45$$
+
+Comprobación en Python
+```{python, comment = NA}
+C = np.array([[1,1,1,-1,0],[0,1,3,1,0],[-1,0,2,1,0],[0,3,0,5,0],[1,2,3,4,5]])
+round(np.linalg.det(C))
+```
+
+### D)
+
+$$|D| = \begin{vmatrix}
+0 & 0 & 0 & 2\\
+0 & 5 & 0 & 3\\
+1 & 2 & 3 & -2\\
+4 & 0 & -3 & 0
+\end{vmatrix}$$
+
+$$F_{34} \cdot F_{42} \bigg( \frac{8}{5} \bigg) \cdot F_{41}(-4) \cdot F_{31} \cdot D = \begin{pmatrix}
+1 & 2 & 3 & -2\\
+0 & 5 & 0 & 3\\
+0 & 0 & -15 & ^{64}/_5\\
+0 & 0 & 0 & 2
+\end{pmatrix}$$
+
+$$|D| = (1)(5)(-15)(2) = -150$$
+
+Comprobación en Python
+```{python, comment = NA}
+D = np.array([[0,0,0,2],[0,5,0,3],[1,2,3,-2],[4,0,-3,0]])
+round(np.linalg.det(D))
+```
+
+
+## Pregunta 2
+
+Estudiar la compatibilidad de los siguientes de los siguientes sistemas de ecuaciones lineales y resolverlos por Crammer en los casos en que sea posible
+
+### A)
+
+$$\left \{ \begin{matrix}
+x & + & y & + & z & = & 0\\
+2x & + & y & + & 2z & = & 0\\
+ & & 2y & + & 5z & = & 1
+\end{matrix} \right .$$
+
+La representación matricial de este sistema es
+
+$$A = \begin{pmatrix}
+1 & 1 & 1\\
+2 & 1 & 2\\
+0 & 2 & 5
+\end{pmatrix} \qquad X = \begin{pmatrix}
+x\\ y\\ z
+\end{pmatrix} \qquad b = \begin{pmatrix}
+0\\ 0\\ 1
+\end{pmatrix}$$
+
+Primero es necesario obtener el determinante de la matriz de coeficientes
+
+$$|A| = (1)(5-4)-(1)(10-0)+(1)(4-0) = (1)(1)-(1)(10)+(1)(4) = 1-10+4$$
+
+$|A| = -5 \neq 0$$
+
+Como el determinante es distinto de 0, el rango de la matriz $A$ es 3. Del mismo modo, el rango de la ampliada es igualmente 3. Por lo tanto tratamos con un sistema compatible determinado, y la solución del sistema es la siguiente
+
+$$x = \frac{|A_1|}{|A|} = \frac{\begin{vmatrix}
+0 & 1 & 1\\
+0 & 1 & 2\\
+1 & 2 & 5
+\end{vmatrix}}{-5} = -\frac{1}{5}$$
+
+$$y = \frac{|A_2|}{|A|} = \frac{\begin{vmatrix}
+1 & 0 & 1\\
+2 & 0 & 2\\
+0 & 1 & 5
+\end{vmatrix}}{-5} = -\frac{0}{5} = 0$$
+
+$$z = \frac{|A_3|}{|A|} = \frac{\begin{vmatrix}
+1 & 1 & 0\\
+2 & 1 & 0\\
+0 & 2 & 1
+\end{vmatrix}}{-5} = -\frac{-1}{5} = \frac{1}{5}$$
+
+La matriz $X$ resulta ser
+
+$$X = \begin{pmatrix} -^1/_5\\ 0\\ ^1/_5 \end{pmatrix}$$
+
+Comprobación en R
+
+```{r, comment = NA}
+# Demostrar que el sistema es compatible determinado
+A = rbind(c(1,1,1),c(2,1,2),c(0,2,5))
+b = c(0,0,1)
+Ab = cbind(A,b)
+qr(A)$rank == qr(Ab)$rank
+qr(A)$rank == 3
+```
+
+Demostrado que $rg(A) = rg(A|B) = r$ y $r = n$, podemos proceder para la resolución
+
+```{r, comment = NA}
+solve(A,b)
+```
+
+
+### B)
+
+$$\left \{ \begin{matrix}
+3x & + & y & + & 5z & = & 2\\
+2x & + & y & + & 2z & = & 0\\
+x & - & 2y & + & 3z & = & 1
+\end{matrix} \right .$$
+
+La representación matricial del sistema es
+
+$$A = \begin{pmatrix}
+3 & 1 & 5\\
+2 & 1 & 2\\
+1 & -2 & 3
+\end{pmatrix} \qquad B = \begin{pmatrix}
+2\\ 0\\ 1
+\end{pmatrix} \qquad X = \begin{pmatrix}
+x\\ y\\ z
+\end{pmatrix}$$
+
+La determinante de $A$ está dada por
+
+$$|A| = (3)(3-(-4))-(1)(6-2)+(5)(-4-1) = (3)(7)-(1)(4)+(5)(-5) = 21 - 4 - 25$$
+$$|A| = -8 \neq 0$$
+
+Como el determinante de $A$ es diferente de 0, el rango será de 3, que es igual al orden de la matriz $A$. Esto también sucede con la ampliada pues $A$ es el mayor menor de la misma. Por ello, comprobamos que el sistema es compatible determinado
+
+$$x = \frac{|A_1|}{|A|} = \frac{\begin{vmatrix}
+2 & 1 & 5\\
+0 & 1 & 2\\
+1 & -2 & 3
+\end{vmatrix}}{|A|} = -\frac{11}{8}$$
+
+$$y = \frac{|A_2|}{|A|} = \frac{\begin{vmatrix}
+3 & 2 & 5\\
+2 & 0 & 2\\
+1 & 1 & 3
+\end{vmatrix}}{-8} = -\frac{-4}{8} = \frac{1}{2}$$
+
+$$z = \frac{|A_3|}{|A|} = \frac{\begin{vmatrix}
+3 & 1 & 2\\
+2 & 1 & 0\\
+1 & -2 & 1
+\end{vmatrix}}{-8} = -\frac{-9}{8} = \frac{9}{8}$$
+
+La matriz de incógnitas queda de la siguiente manera
+
+$$X = \begin{pmatrix} -^{11}/_8\\ ^1/_2\\ ^9/_8 \end{pmatrix}$$
+
+Comprobación en R
+```{r, comment = NA}
+# Demostrar que el sistema es compatible determinado
+A = rbind(c(3,1,5),c(2,1,2),c(1,-2,3))
+b = c(2,0,1)
+Ab = cbind(A,b)
+qr(A)$rank == qr(Ab)$rank
+qr(A)$rank == 3
+
+#Solución
+solve(A,b)
+```
+
+
+### C)
+
+$$\left \{ \begin{matrix}
+3x & & & - & 7z & = & 2\\
+2x & + & y & + & 2z & = & 9\\
+-2x & + & 2y & + & 3z & = & -11
+\end{matrix} \right .$$
+
+La representación matricial del sistema es 
+
+$$A = \begin{pmatrix}
+3 & 0 & -7\\
+2 & 1 & 2\\
+-2 & 2 & 3
+\end{pmatrix} \qquad X = \begin{pmatrix} 
+x\\ y\\ z 
+\end{pmatrix} \qquad b = \begin{pmatrix}
+2\\ 9\\ -11
+\end{pmatrix}$$
+
+Ahora se obtendrá el determinante de la matriz de coeficientes
+
+$$|A| = (3)(3-4)-(0)(6+4)+(-7)(4+2) = (3)(-1)-0+(-7)(6) = -3-0-42$$
+$$|A| = -45 \neq 0$$
+
+Como el determinante es distinto de 0, el rango de $A$ es 3, y por ende el rango de nuestra matriz ampliada es el mismo. Como el rango es igual al orden de la matriz $A$, podemos concluir que el sistema de ecuaciones lineales es compatible determinado
+
+$$x = \frac{|A_1|}{|A|} = \frac{\begin{vmatrix}
+2 & 0 & -7\\
+9 & 1 & 2\\
+-11 & 2 & 3
+\end{vmatrix}}{-45} = -\frac{-205}{45} = \frac{41}{9}$$
+
+$$y = \frac{|A_2|}{|A|} = \frac{\begin{vmatrix}
+3 & 2 & -7\\
+2 & 9 & 2\\
+-2 & -11 & 3
+\end{vmatrix}}{-45} = -\frac{155}{45} = -\frac{31}{9}$$
+
+$$z = \frac{|A_3|}{|A|} = \frac{\begin{vmatrix}
+3 & 0 & 2\\
+2 & 1 & 9\\
+-2 & 2 & -11
+\end{vmatrix}}{-45} = -\frac{-75}{45} = \frac{5}{3}$$
+
+La matriz de incógnitas queda de la siguiente manera
+
+$$X = \begin{pmatrix} ^{41}/_9\\ -^{31}/_9\\ ^5/_3 \end{pmatrix}$$
+
+Comprobación en R
+```{r, comment = NA}
+# Demostrar que el sistema es compatible determinado
+A = rbind(c(3,0,-7),c(2,1,2),c(-2,2,3))
+b = c(2,9,-11)
+Ab = cbind(A,b)
+qr(A)$rank == qr(Ab)$rank
+qr(A)$rank == 3
+
+#Solución
+solve(A,b)
+```
+
+
+### D)
+
+$$\left \{ \begin{matrix}
+3x & - & 3y & - & 7z & + & t & = & -2\\
+2x & & & + & 2z & + & 2t & = & 0\\
+-2x & + & 2y & + & 3z & - & t & = & -1\\
+2x & + & 2y & + & 3z & + & t & = & -3
+\end{matrix} \right .$$
+
+La representación matricial del sistema es
+
+$$A = \begin{pmatrix}
+3 & -3 & -7 & 1\\
+2 & 0 & 2 & 2\\
+-2 & 2 & 3 & -1\\
+2 & 2 & 3 & 1
+\end{pmatrix} \qquad X = \begin{pmatrix} x\\y\\z\\t \end{pmatrix} \qquad
+b = \begin{pmatrix} -2\\0\\-1\\-3 \end{pmatrix}$$
+
+Es necesario obtener el rango de la matriz $A$ y de su ampliada; así tendremos suficiente información para poder concluir el tipo de sistema que es
+
+$$|A| = -2 \cdot \begin{vmatrix}
+1 & 0 & 1 & 1\\
+0 & 2 & 1 & 5\\
+0 & 0 & 1 & 5\\
+0 & 0 & 0 & -3
+\end{vmatrix} = (-2)(1)(2)(1)(-3) = 12 \neq 0$$
+
+```{r, comment = NA}
+A = rbind(c(3,-3,-7,1),c(2,0,2,2),c(-2,2,3,-1),c(2,2,3,1))
+det(A)
+```
+
+
+Como el determinante no es nulo, el rango de la matriz $A$ y de su ampliada es 4. Esto demuestra que el sistema de ecuaciones lineales es un sistema compatible determinado
+
+$$x = \frac{|A_1|}{|A|} = \frac{\begin{vmatrix}
+-2 & -3 & -7 & 1\\
+0 & 0 & 2 & 2\\
+-1 & 2 & 3 & -1\\
+-3 & 2 & 3 & 1
+\end{vmatrix}}{12} = \frac{12}{12} = 1$$
+
+$$y = \frac{|A_2|}{|A|} = \frac{\begin{vmatrix}
+3 & -2 & -7 & 1\\
+2 & 0 & 2 & 2\\
+-2 & -1 & 3 & -1\\
+2 & -3 & 3 & 1
+\end{vmatrix}}{12} = \frac{-48}{12} = -4$$
+
+$$z = \frac{|A_3|}{|A|} = \frac{\begin{vmatrix}
+3 & -3 & -2 & 1\\
+2 & 0 & 0 & 2\\
+-2 & 2 & -1 & -1\\
+2 & 2 & -3 & 1
+\end{vmatrix}}{12} = \frac{24}{12} = 2$$
+
+$$t = \frac{|A_4|}{|A|} = \frac{\begin{vmatrix}
+3 & -3 & -7 & -2\\
+2 & 0 & 2 & 0\\
+-2 & 2 & 3 & -1\\
+2 & 2 & 3 & -3
+\end{vmatrix}}{12} = \frac{-36}{12} = -3$$
+
+La matriz de incógnitas queda de la siguiente manera
+
+$$X = \begin{pmatrix} 1\\-4\\2\\-3 \end{pmatrix}$$
+
+Comprobación en R
+```{r, comment = NA}
+# Demostrar que el sistema es compatible determinado
+A = rbind(c(3,-3,-7,1),c(2,0,2,2),c(-2,2,3,-1),c(2,2,3,1))
+b = c(-2,0,-1,-3)
+Ab = cbind(A,b)
+qr(A)$rank == qr(Ab)$rank
+qr(A)$rank == 4
+
+#Solución
+solve(A,b)
+```
+
+
+## Pregunta 3
+
+Calcula el rango de las matrices siguientes según los valores de los parámetros
+
+### A)
+
+$$A = \begin{pmatrix}
+\alpha & \alpha & \beta & \beta\\
+\beta & \beta & \alpha & \alpha\\
+\alpha & \beta & \beta & \alpha\\
+\beta & \alpha & \beta & \alpha
+\end{pmatrix}$$
+
+Primero, se obtendra el determinante de la matriz $A$ 
+
+$$|A| = \begin{vmatrix}
+\alpha & \alpha & \beta & \beta\\
+0 & \alpha - \beta & \beta - \frac{\beta^2}{\alpha} & \alpha - \frac{\beta^2}{\alpha}\\
+0 & 0 & \alpha - \frac{\beta^2}{\alpha} & \alpha - \frac{\beta^2}{\alpha}\\
+0 & 0 & 0 & 2\alpha - 2\beta
+\end{vmatrix} = (\alpha)(\alpha - \beta)(\alpha - \frac{\beta^2}{\alpha})(2\alpha - 2\beta)$$
+
+$$|A| = 2\alpha^4 - 4\alpha^3\beta + 4\alpha\beta^3 - 2\beta^4$$
+
+El primer caso dado, se plantea que $\alpha, \beta = 0$. Si ambas variables son nulas, la matriz sería una matriz nula. Esto implica que el determinante de la matriz $A$, incluyendo a sus menores, sea 0. Por lo tanto, se puede concluir que el rango de la matriz en este caso es 0
+
+$$\text{Si } \alpha,\beta= 0 \quad \implies \quad rg(A) = 0 $$
+
+En caso de que $\alpha = 0$ y $\beta \in \mathbb{R}$, la expresión obtenida para obtener el determinante de $A$ quedaría de la siguiente forma 
+
+$$|A| = -2\beta^4$$
+
+Esto implica que el determinante no será 0, y por lo tanto el rango se mantiene en 4
+
+El siguiente caso sugiere que $\alpha \in \mathbb{R}$ y $\beta = 0$, de manera que la expresión de la determinante queda de la siguiente manera
+
+$$|A| = 2\alpha^4$$
+
+Gracias a esto podemos concluir que el rango en este caso es 4
+
+Dado el siguiente caso, $\alpha \in \mathbb{R}$ y $\beta \in \mathbb{R}$, en el que ninguno de los parámetros es nulo, la expresión obtenida para calcular el dterminante se queda igual. por lo que su rango, como en los casos anteriores, es 4
+
+
+### B)
+
+$$A = \begin{pmatrix}
+\alpha & 0 & 0 & \beta\\
+\beta & \alpha & 0 & 0\\
+0 & 0 & \beta & \alpha
+\end{pmatrix}$$
+
+El rango de la matriz anterior debe ser $rg(A) \leq 3$.
+
+Existen $\left(\begin{array}{c} 4\\ 3 \end{array}\right) = 4$ menores que se pueden formar de orden 3, de los cuales obtendremos la expresión que defina su determinante.
+
+$$|A_1| = \begin{vmatrix}
+\alpha & 0 & 0\\
+\beta & \alpha & 0\\
+0 & 0 & \beta
+\end{vmatrix} = \alpha \begin{vmatrix}
+\alpha & 0\\
+0 & \beta
+\end{vmatrix} = \alpha(\alpha \beta) = \alpha^2\beta$$
+
+$$|A_2| = \begin{vmatrix}
+\alpha & 0 & \beta\\
+\beta & \alpha & 0\\
+0 & 0 & \alpha
+\end{vmatrix} = \alpha \begin{vmatrix}
+\alpha & 0\\
+0 & \alpha
+\end{vmatrix} + \beta \begin{vmatrix}
+\beta & \alpha\\
+0 & 0
+\end{vmatrix}= \alpha(\alpha^2) + \beta(0) = \alpha^3$$
+
+$$|A_3| = \begin{vmatrix}
+0 & 0 & \beta\\
+\alpha & 0 & 0\\
+0 & \beta & \alpha
+\end{vmatrix} = \beta \begin{vmatrix}
+\alpha & 0\\
+0 & \beta
+\end{vmatrix} = \beta(\alpha \beta) = \alpha\beta^2$$
+
+$$|A_4| = \begin{vmatrix}
+\alpha & 0 & \beta\\
+\beta & 0 & 0\\
+0 & \beta & \alpha
+\end{vmatrix} = \alpha \begin{vmatrix}
+0 & 0\\
+\beta & \alpha
+\end{vmatrix} + \beta \begin{vmatrix}
+\beta & 0\\
+0 & \beta
+\end{vmatrix}= 0 + \beta(\beta^2) = \beta^3$$
+
+En un primer caso, consideraremos que ambas variables son nulas $\alpha = 0$ y $\beta = 0$. Dicho caso nos provee de una matriz nula y por ende, un rango de 0
+
+$$\text{Si } \alpha, \beta = 0 \quad \implies \quad rg(A) = 0$$
+
+Para los siguientes casos, el rango de la matriz equivale a 3, $rg(A) = 3$
+
+$$\left \{ \begin{matrix}
+\alpha = 0 \text{ , } \beta \neq 0 \text{ y } \beta \in \mathbb{R}\\
+\beta = 0 \text{ , } \alpha \neq 0 \text{ y } \alpha \in \mathbb{R}\\
+\beta \neq 0 \text{ y } \alpha \neq 0
+\end{matrix} \right .$$
+
+
+### C)
+
+$$A = \begin{pmatrix}
+1 & \alpha & -1 & 2\\
+2 & -1 & \beta & 5\\
+1 & 10 & -6 & 1
+\end{pmatrix}$$
+
+El rango de la matriz $A$ debe ser de $rg(A) \leq 3$
+
+Tomando en cuenta las variables $\alpha$ y $\beta$, existe un menor de orden 2 que no depende de las mismas para definir su determinante, no es nulo. Esto prueba que $rg(A) \geq 2$, y por ende el rango puede ser 2 o 3
+
+Existen $\left(\begin{array}{c} 4\\ 3 \end{array}\right) = 4$ menores de orden 3 de los cuales obtendremos la expresión que define sus determinantes
+
+$$|A_1| = \begin{vmatrix}
+1 & \alpha & -1\\
+2 & -1 & \beta\\
+1 & 10 & -6
+\end{vmatrix} = 1(6-10\beta) - \alpha(-12-\beta) + (-1)(20+1)$$
+$$|A_1| = 6 - 10\beta + 12\alpha + \alpha\beta - 21 = 12\alpha + \alpha\beta - 10\beta - 15$$
+
+Con este ejemplo podemos definir los siguientes casos
+
+El primer caso plantea que $\alpha = 0$ y $\beta = 0$, lo cual al sustituir estos valores en la expresión de la determinante de $A$ queda de la siguiente manera
+
+$$|A_1| = 12(0) + \alpha(0) - 10(0) - 15 = -15$$
+
+Con el resultado obtenido, podemos concluirq que
+
+$$\text{Si } \alpha,\beta = 0 \quad \implies \quad rg(A) = 3$$
+
+En realidad, a pesar del valor que tomen $\alpha$ y $\beta$ dentro del conjunto de los números reales, el rango de la matriz $A$ será siempre de 3
+
+
+## Pregunta 4
+
+Encuentra el valor del siguiente determinante de orden $n$
+
+$$|A_n| = \begin{vmatrix}
+0 & 1 & 0 & \cdots & 0 & 0\\
+1 & 0 & 2 & \cdots & 0 & 0\\
+0 & 1 & 0 & \cdots & 0 & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+0 & 0 & 0 & \cdots & 0 & n-1\\
+0 & 0 & 0 & \cdots & 1 & 0
+\end{vmatrix}$$
+
+Se planterán diferentes ejemplos con distintos valores de $n$, para encontrar un patrón que nos ayude a definir una ecuación que permita encontrar el determinante de la matriz $A$ de acuerdo al orden de la misma
+
+### n = 2
+$$\begin{vmatrix} 0 & 1\\ 1 & 0\\ \end{vmatrix} = (0) - (1\cdot1) = -1$$
+
+### n = 3
+$$\begin{vmatrix}
+0 & 1 & 0\\
+1 & 0 & 2\\
+0 & 1 & 0
+\end{vmatrix} = 0 -(1)(0) + 0 = 0$$
+
+### n = 4
+$$\begin{vmatrix}
+0 & 1 & 0 & 0\\
+1 & 0 & 2 & 0\\
+0 & 1 & 0 & 3\\
+0 & 0 & 1 & 0
+\end{vmatrix} = (-1)\begin{vmatrix}
+1 & 2 & 0\\
+0 & 0 & 3\\
+0 & 1 & 0
+\end{vmatrix} = (-1)\begin{vmatrix} 0 & 3\\ 1 & 0\\ \end{vmatrix} = -(0-3) = 3$$
+
+### n = 5
+$$\begin{vmatrix}
+0 & 1 & 0 & 0 & 0\\
+1 & 0 & 2 & 0 & 0\\
+0 & 1 & 0 & 3 & 0\\
+0 & 0 & 1 & 0 & 4\\
+0 & 0 & 0 & 1 & 0
+\end{vmatrix} = (-1)\begin{vmatrix}
+1 & 2 & 0 & 0\\
+0 & 0 & 3 & 0\\
+0 & 1 & 0 & 4\\
+0 & 0 & 1 & 0
+\end{vmatrix} = (-1)\begin{vmatrix}
+0 & 3 & 0\\
+1 & 0 & 4\\
+0 & 1 & 0
+\end{vmatrix} = (-1)(-3)\begin{vmatrix} 1 & 4\\ 0 & 0\\ \end{vmatrix} = 3(0-0) = 0$$
+
+### n = 6
+$$\begin{vmatrix}
+0 & 1 & 0 & 0 & 0 & 0\\
+1 & 0 & 2 & 0 & 0 & 0\\
+0 & 1 & 0 & 3 & 0 & 0\\
+0 & 0 & 1 & 0 & 4 & 0\\
+0 & 0 & 0 & 1 & 0 & 5\\
+0 & 0 & 0 & 0 & 1 & 0
+\end{vmatrix} = (-1)\begin{vmatrix}
+1 & 2 & 0 & 0 & 0\\
+0 & 0 & 3 & 0 & 0\\
+0 & 1 & 0 & 4 & 0\\
+0 & 0 & 1 & 0 & 5\\
+0 & 0 & 0 & 1 & 0
+\end{vmatrix} = (-1)\begin{vmatrix}
+0 & 3 & 0 & 0\\
+1 & 0 & 4 & 0\\
+0 & 1 & 0 & 5\\
+0 & 0 & 1 & 0
+\end{vmatrix} = (-1)(-3)\begin{vmatrix}
+1 & 4 & 0\\
+0 & 0 & 5\\
+0 & 1 & 0
+\end{vmatrix}$$
+
+$$= 3\begin{vmatrix} 0 & 5\\ 1 & 0\\ \end{vmatrix} = 3(0-5) = 3(-5) = -15$$
+
+En base a los resultados obtenidos podemos definir de la siguiente manera el determinante de la matriz de orden $n$
+
+$$|A_n| = \left \{ \begin{matrix}
+(-1)(n-1)(|A_{n-2}|) & \text{Si} & n \geq 2\\
+0 & \text{Si} & n = 0,1\\
+\end{matrix} \right .$$
+
+
+## Pregunta 5
+
+Calcular el rango de las siguientes matrices y, si es posible, su inversa haciendo uso de determinantes
+
+### A)
+$$A = \begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 0 & 0 & 4\\
+0 & 2 & 0 & 0\\
+0 & 0 & 3 & 0
+\end{pmatrix}$$
+
+$$|A| = (1)\begin{vmatrix}
+0 & 0 & 4\\
+2 & 0 & 0\\
+0 & 3 & 0
+\end{vmatrix} = (1)(4)\begin{vmatrix} 2 & 0\\ 0 & 3 \end{vmatrix} = (1)(4)(2)(3) = 24$$
+
+El rango de esta matriz es $\text{rg}(A) = 4$
+
+Para obtener la inversa de la matriz $A$ usaremos la expresión $A^{-1} = \frac{(Adj(A))^t}{det(A)}$. Para ello realizamos las siguientes operaciones
+
+$$A_{11} = \begin{vmatrix}
+0 & 0 & 4\\
+2 & 0 & 0\\
+0 & 3 & 0
+\end{vmatrix} = (4)\begin{vmatrix} 2 & 0\\ 0 & 3 \end{vmatrix} = (4)(2)(3) = 24$$
+
+$$A_{24} = \begin{vmatrix}
+1 & 0 & 0\\
+0 & 2 & 0\\
+0 & 0 & 3
+\end{vmatrix} = (1)\begin{vmatrix} 2 & 0\\ 0 & 3 \end{vmatrix} = (1)(2)(3) = 6$$
+
+$$A_{32} = -\begin{vmatrix}
+1 & 0 & 0\\
+0 & 0 & 4\\
+0 & 3 & 0
+\end{vmatrix} = -(1)\begin{vmatrix} 0 & 4\\ 3 & 0 \end{vmatrix} = (1)(3)(4) = 12$$
+
+$$A_{43} = -\begin{vmatrix}
+1 & 0 & 0\\
+0 & 0 & 4\\
+0 & 2 & 0
+\end{vmatrix} = -(1)\begin{vmatrix} 0 & 4\\ 2 & 0 \end{vmatrix} = (1)(2)(4) = 8$$
+
+$$\text{Adj}(A) = \begin{pmatrix}
+24 & 0 & 0 & 0\\
+0 & 0 & 0 & 6\\
+0 & 12 & 0 & 0\\
+0 & 0 & 8 & 0
+\end{pmatrix} \qquad (\text{Adj}(A))^t = \begin{pmatrix}
+24 & 0 & 0 & 0\\
+0 & 0 & 12 & 0\\
+0 & 0 & 0 & 8\\
+0 & 6 & 0 & 0
+\end{pmatrix}$$
+
+$$A^{-1} = \frac{1}{det(A)}(Adj(A))^t = \frac{1}{24} \begin{pmatrix}
+24 & 0 & 0 & 0\\
+0 & 0 & 12 & 0\\
+0 & 0 & 0 & 8\\
+0 & 6 & 0 & 0
+\end{pmatrix} = \begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 0 & ^1/_2 & 0\\
+0 & 0 & 0 & ^1/_3\\
+0 & ^1/_4 & 0 & 0
+\end{pmatrix}$$
+
+Comprobación en Octave
+```{octave, comment = NA}
+A = [1 0 0 0; 0 0 0 4; 0 2 0 0; 0 0 3 0];
+rank(A)
+inv(A)
+```
+
+
+### B)
+
+$$B = \begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & 3 & 0 & 0\\
+0 & 0 & 5 & 0\\
+0 & 0 & 0 & 7
+\end{pmatrix}$$
+
+Para calcular su rango y su inversa, es necesario obtener la determinante de la matriz
+
+$$|B| = (1)(3)(5)(7) = 105$$
+Como su determinante no es 0, podemos concluir que su rango es igual al orden de la matriz, es decir $\text{rg}(B) = 4$
+
+Las operaciones para obtener la inversa de esta matriz son las siguientes: 
+
+$$B_{11} = \begin{vmatrix}
+3 & 0 & 0\\
+0 & 5 & 4\\
+0 & 0 & 7
+\end{vmatrix} = (3)(5)(7) = 105$$
+
+$$B_{22} = \begin{vmatrix}
+1 & 0 & 0\\
+0 & 5 & 4\\
+0 & 0 & 7
+\end{vmatrix} = (1)(5)(7) = 35$$
+
+$$A_{33} = \begin{vmatrix}
+1 & 0 & 0\\
+0 & 3 & 4\\
+0 & 0 & 7
+\end{vmatrix} = (1)(3)(7) = 21$$
+
+$$B_{44} = \begin{vmatrix}
+1 & 0 & 0\\
+0 & 3 & 4\\
+0 & 0 & 5
+\end{vmatrix} = (1)(3)(5) = 15$$
+
+$$\text{Adj}(B) = \begin{pmatrix}
+105 & 0 & 0 & 0\\
+0 & 35 & 0 & 0\\
+0 & 0 & 21 & 0\\
+0 & 0 & 0 & 15
+\end{pmatrix} = (\text{Adj}(B))^t$$
+
+$$B^{-1} = \frac{1}{\text{det}(B)}(\text{Adj}(B))^t = \frac{1}{105} \begin{pmatrix}
+105 & 0 & 0 & 0\\
+0 & 35 & 0 & 0\\
+0 & 0 & 21 & 0\\
+0 & 0 & 0 & 15
+\end{pmatrix} = \begin{pmatrix}
+1 & 0 & 0 & 0\\
+0 & ^1/_3 & 0 & 0\\
+0 & 0 & ^1/_5 & 0\\
+0 & 0 & 0 & ^1/_7
+\end{pmatrix}$$
+
+Comprobación en Octave
+```{octave, comment = NA}
+B = [1 0 0 0; 0 3 0 0; 0 0 5 0; 0 0 0 7];
+rank(B)
+inv(B)
+```
+
+
+### C)
+
+$$C = \begin{pmatrix}
+1 & 2 & 3 & 4\\
+4 & 3 & -2 & -1\\
+1 & -2 & -3 & 4\\
+0 & 0 & 4 & 0
+\end{pmatrix}$$
+
+Determinante de $C$
+
+$$|C| = -(4)\begin{vmatrix}
+1 & 2 & 4\\
+4 & 3 & -1\\
+1 & -2 & 4
+\end{vmatrix} = -4(12-32-2-12-2-32) = -4(-68) = 272$$
+
+Debido a que la determinante no es 0, el rango de la matriz es $\text{rg}(C) = 4$
+
+La inversa de la matriz es la siguiente
+
+$$C_{11} = \begin{vmatrix}
+3 & -2 & -1\\
+-2 & -3 & 4\\
+0 & 4 & 0
+\end{vmatrix} = -40 \qquad C_{12} = \begin{vmatrix}
+4 & -2 & -1\\
+1 & -3 & 4\\
+0 & 4 & 0
+\end{vmatrix} = 68 \qquad C_{13} = \begin{vmatrix}
+4 & 3 & -1\\
+1 & -2 & 4\\
+0 & 0 & 0
+\end{vmatrix} = 0 \qquad C_{14} = \begin{vmatrix}
+4 & 3 & -2\\
+1 & -2 & -3\\
+0 & 0 & 4
+\end{vmatrix} = 44$$
+
+$$C_{21} = \begin{vmatrix}
+2 & 3 & 4\\
+-2 & -3 & 4\\
+0 & 4 & 0
+\end{vmatrix} = 64 \qquad C_{22} = \begin{vmatrix}
+1 & 3 & 4\\
+1 & -3 & 4\\
+0 & 4 & 0
+\end{vmatrix} = 0 \qquad C_{23} = \begin{vmatrix}
+1 & 2 & 4\\
+1 & -2 & 4\\
+0 & 0 & 0
+\end{vmatrix} = 0 \qquad C_{24} = \begin{vmatrix}
+1 & 2 & 3\\
+1 & -2 & -3\\
+0 & 0 & 4
+\end{vmatrix} = -16$$
+
+$$C_{31} = \begin{vmatrix}
+2 & 3 & 4\\
+3 & -2 & -1\\
+0 & 4 & 0
+\end{vmatrix} = 56 \qquad C_{32} = \begin{vmatrix}
+1 & 3 & 4\\
+4 & -2 & -1\\
+0 & 4 & 0
+\end{vmatrix} = -68 \qquad C_{33} = \begin{vmatrix}
+1 & 2 & 4\\
+4 & 3 & -1\\
+0 & 0 & 0
+\end{vmatrix} = 0 \qquad C_{34} = \begin{vmatrix}
+1 & 2 & 3\\
+4 & 3 & -2\\
+0 & 0 & 4
+\end{vmatrix} = 20$$
+
+$$C_{41} = \begin{vmatrix}
+2 & 3 & 4\\
+3 & -2 & -1\\
+-2 & -3 & 4
+\end{vmatrix} = 104 \qquad C_{42} = \begin{vmatrix}
+1 & 3 & 4\\
+4 & -2 & -1\\
+1 & -3 & 4
+\end{vmatrix} = -102 \qquad C_{43} = \begin{vmatrix}
+1 & 2 & 4\\
+4 & 3 & -1\\
+1 & -2 & 4
+\end{vmatrix} = 68 $$
+
+$$C_{44} = \begin{vmatrix}
+1 & 2 & 3\\
+4 & 3 & -2\\
+1 & -2 & -3
+\end{vmatrix} = -26$$
+
+
+$$\text{Adj}(C) = \begin{pmatrix}
+-40 & 68 & 0 & 44\\
+64 & 0 & 0 & -16\\
+56 & -68 & 0 & 20\\
+104 & -102 & 68 & -26
+\end{pmatrix} \qquad (\text{Adj}(B))^t = \begin{pmatrix}
+-40 & 64 & 56 & 104\\
+68 & 0 & -68 & -102\\
+0 & 0 & 0 & 68\\
+44 & -16 & 20 & -26
+\end{pmatrix}$$
+
+$$C^{-1} = \frac{1}{\text{det}(C)}(\text{Adj}(C))^t = \frac{1}{272} \begin{pmatrix}
+-40 & 64 & 56 & 104\\
+68 & 0 & -68 & -102\\
+0 & 0 & 0 & 68\\
+44 & -16 & 20 & -26
+\end{pmatrix} = \begin{pmatrix}
+-^5/_{34} & ^4/_{17} & ^7/_{34} & ^{13}/_{34}\\
+^1/_4 & 0 & -^1/_4 & -^3/_8\\
+0 & 0 & 0 & ^1/_4\\
+^{11}/_{68} & -^1/_{17} & ^{5}/_{68} & -^{13}/_{136}
+\end{pmatrix}$$
+
+Comprobación con Octave
+```{octave, comment = NA}
+C = [1 2 3 4; 4 3 -2 -1; 1 -2 -3 4; 0 0 4 0];
+rank(C)
+inv(C)
+```
+
+### D)
+
+$$D = \begin{pmatrix}
+9 & 7 & 1 & 4 & 2\\
+6 & 5 & 7 & 4 & 3\\
+1 & 9 & 2 & 6 & 5\\
+2 & 1 & 0 & -1 & -2\\
+9 & 7 & 5 & 3 & 1
+\end{pmatrix}$$
+
+El determinante de $C$
+
+$$|D| = \begin{vmatrix}
+1 & 9 & 2 & 6 & 5\\
+0 & -74 & -17 & -50 & -43\\
+0 & 0 & \frac{463}{74} & \frac{41}{37} & \frac{109}{74}\\
+0 & 0 & 0 & -\frac{693}{463} & -\frac{972}{463}\\
+0 & 0 & 0 & 0 & \frac{5}{11}
+\end{vmatrix} = (1)(-74) \bigg( \frac{463}{74} \bigg) \bigg( -\frac{693}{463} \bigg) \bigg(\frac{5}{11} \bigg) = 315$$
+
+Debido a que $|D| \neq 0$, entonces $\text{rg}(D) = 5$
+
+Su inversa se obtiene de la siguiente manera
+
+$$\text{Adj}(D) = \begin{pmatrix}
+15 & -105 & -45 & 345 & -210\\
+-50 & -175 & 45 & 635 & -455\\
+-35 & 35 & 0 & 35 & -35\\
+-107 & -154 & 27 & 899 & -791\\
+81 & 252 & 9 & -972 & 693
+\end{pmatrix} \qquad (\text{Adj}(D))^t = \begin{pmatrix}
+15 & -50 & -35 & -107 & 81\\
+-105 & -175 & 35 & -154 & 252\\
+-45 & 45 & 0 & 27 & 9\\
+345 & 635 & 35 & 899 & -972\\
+-210 & -455 & -35 & -791 & 693
+\end{pmatrix}$$
+
+$$D^{-1} = \frac{1}{\text{det}(D)}(\text{Adj}(D))^t = \frac{1}{315} \begin{pmatrix}
+15 & -50 & -35 & -107 & 81\\
+-105 & -175 & 35 & -154 & 252\\
+-45 & 45 & 0 & 27 & 9\\
+345 & 635 & 35 & 899 & -972\\
+-210 & -455 & -35 & -791 & 693
+\end{pmatrix} = \begin{pmatrix}
+^1/_{21} & -^{10}/_{63} & -^1/_9 & -^{107}/_{315} & ^9/_{35}\\
+-^1/_3 & -^5/_9 & ^1/_9 & -^{22}/_{45} & ^4/_5\\
+-^1/_7 & ^1/_7 & 0 & ^3/_{35} & ^1/_{35}\\
+^{23}/_{21} & ^{127}/_{63} & ^1/_9 & ^{899}/_{315} & -^{108}/_{35}\\
+-^2/_3 & -^{13}/_9 & -^1/_9 & -^{113}/_{45} & ^{11}/_5
+\end{pmatrix}$$
+
+Comprobación con Octave
+```{octave, comment = NA}
+D = [9 7 1 4 2; 6 5 7 4 3; 1 9 2 6 5; 2 1 0 -1 -2; 9 7 5 3 1];
+rank(D)
+inv(D)
+```
+
+### E)
+
+$$E = \begin{pmatrix} 0 & a\\ a & 0 \end{pmatrix}$$
+
+La determinante de la matriz esta dada por la siguiente expresión
+
+$$|E| = (0)(0) - (a)(a) = -a^2$$
+
+El rango de esta matriz esta dado según el valor que se le asigne a la variable $a$
+
+$$\text{rg}(E) = \left \{ \begin{matrix}
+2 & \text{Si} & a \neq 0, a \in \mathbb{R}\\
+0 & \text{Si} & a = 0
+\end{matrix} \right .$$
+
+La inversa de la matriz está dada de la siguiente forma
+
+$$\text{Adj}(E) = \begin{pmatrix}
+0 & -a\\ -a & 0
+\end{pmatrix} \qquad (\text{Adj}(E))^t = \begin{pmatrix}
+0 & -a\\ -a & 0
+\end{pmatrix}$$
+
+$$E^{-1} = \frac{1}{\text{det}(E)}(\text{Adj}(E))^t = \frac{1}{-a^2}\begin{pmatrix}
+0 & -a\\ -a & 0
+\end{pmatrix} = \begin{pmatrix}
+0 & ^1/_a\\ ^1/_a & 0
+\end{pmatrix}$$
+
+
+### F)
+
+$$F = \begin{pmatrix}
+2 & 1 & 0\\
+3 & a & 4\\
+0 & 0 & -1
+\end{pmatrix}$$
+
+La determinante de esta matriz esta dado por la siguiente expresión
+
+$$|F| = (-1)\begin{vmatrix}
+2 & 1\\ 3 & a
+\end{vmatrix} = -(2a-3) = 3-2a$$
+
+Cuando el determinante es 0, el valor de $a$ es
+
+$$3 - 2a = 0 \quad \implies \quad a = \frac{3}{2}$$
+
+Con este caso podemos deducir que el rango es menor que 3, $\text{rg}(F) < 3$, para el caso en que $a = \frac{3}{2}$. 
+
+Considerando lo anterior, un menor de orden 2, cuando $a$ vale lo dicho, tiene una determinante no nula
+
+$$\begin{vmatrix} 1 & 0\\ a & 4\end{vmatrix} = (1)(4)-(a)(0) = 4$$
+Por lo tanto cuando $a = \frac{3}{2}$ el rango de la matriz $F$ es igual a 2
+
+De esta manera, el rango de $F$ se define bajo los siguientes casos
+
+$$\text{rg}(F) = \left \{ \begin{matrix}
+3 & \text{Si} & a \neq \frac{3}{2}\\
+2 & \text{Si} & a = \frac{3}{2}
+\end{matrix} \right .$$
+
+La inversa de la matriz se obtiene de la siguiente forma
+
+$$\text{Adj}(F) = \begin{pmatrix}
+-a & 3 & 0\\ 1 & -2 & 0\\ 4 & -8 & 2a-3
+\end{pmatrix} \qquad (\text{Adj}(F))^t = \begin{pmatrix}
+-a & 1 & 4\\ 3 & -2 & -8\\ 0 & 0 & 2a-3
+\end{pmatrix}$$
+
+$$F^{-1} = \frac{1}{\text{det}(F)}(\text{Adj}(F))^t = \frac{1}{3-2a}\begin{pmatrix}
+-a & 1 & 4\\ 3 & -2 & -8\\ 0 & 0 & 2a-3
+\end{pmatrix} = \begin{pmatrix}
+\frac{-a}{3-2a} & \frac{1}{3-2a} & \frac{4}{3-2a}\\ 
+\frac{3}{3-2a} & \frac{-2}{3-2a} & \frac{-8}{3-2a}\\ 
+0 & 0 & \frac{2a-3}{3-2a}
+\end{pmatrix}$$
+

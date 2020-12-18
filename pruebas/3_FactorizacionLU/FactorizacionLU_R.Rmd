@@ -1,0 +1,164 @@
+---
+title: "Factorizacion LU con R"
+author: "Daniel Eduardo Macias Estrada"
+date: "30/11/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introducción
+
+En el siguiente documento se explicará de manera breve, el manejo de la factorización LU con el lenguaje de programación R.
+
+Toda la información recabada está basado enteramente de la obra de Juan Gabrial Gomila Salas, CEO de Frogames, Matemático, Data Scientist & Game Designer
+
+### Uso de la Factorización LU en R
+
+En este lenguaje, para dar lugar a dicho proceso, es necesario el uso de la función **LU()**, la cual acepta como argumento una matriz cuadrada.
+
+La respuesta que obtendremos será una lista de matrices, que contendrá a $P$, $U$ y $L$
+
+### Ejemplo 1
+
+Encontremos la factorización LU de la siguiente matriz
+
+$$A = \begin{pmatrix}
+1 & 3 & 0 & -1\\
+2 & 1 & -1 & 5\\
+0 & -2 & 3 & -1\\
+1 & 1 & 3 & 1
+\end{pmatrix}$$
+
+```{r}
+library(matlib)
+A = rbind(c(1,3,0,-1), c(2,1,-1,5), c(0,-2,3,-1), c(1,1,3,1))
+luA = LU(A)
+```
+
+Con la función **LU()** se creo la lista almacenada en luA, a la cual se puede acceder a sus componentes de la siguiente manera.
+
+Como primer caso, se muestra $P$, el cual es la matriz en el que se almacenan las permutaciones realizadas. En caso de obtener una $I_n$, tenemos que no se ha realizado ninguna permutación
+
+```{r}
+luA$P
+```
+
+En el caso de $L$, se obtiene
+
+```{r}
+luA$L
+```
+
+En el caso de $U$, obtenemos
+
+```{r}
+luA$U
+```
+
+La comprobación de los resultados se muestra a continuación
+
+```{r}
+luA$L %*% luA$U
+```
+
+
+
+### Ejemplo 2
+
+Encontraremos ahora la factorización LU de la matriz
+
+$$A = \begin{pmatrix}
+0 & 1 & 3\\
+1 & 3 & -2\\
+-3 & -2 & -1
+\end{pmatrix}$$
+
+```{r}
+A = rbind(c(0,1,3), c(1,3,-2), c(-3,-2,-1))
+luA = LU(A)
+```
+
+Para este ejemplo, $P$ sería
+
+```{r}
+luA$P
+```
+
+La matriz $L$ sería
+
+```{r}
+luA$L
+```
+
+La matriz $U$, sería
+
+```{r}
+luA$U
+```
+
+La comprobación de los resultados se muestra a continuación
+
+```{r}
+luA$L %*% luA$U
+```
+
+## Aplicación de la factorización LU para resolver sistemas de ecuaciones
+
+La función **LU()** es también usada para resolver sistemas de ecuaciones lineales, aplicando la factorización LU a la matriz de coeficientes.
+
+Aparte de añadir la matriz de coeficientes, de la cual obtendremos sus componentes $L$ y $U$, a los argumentos de la función, se deberá agregar el vector de términos independientes. Con esto en cuenta, los componentes que devuelve en la lista no son solo $P$, $L$ y $U$, sino que también $x$ y $d$
+
+Donde
+
+* $x$ es la solución del sistema
+* $d$ es el vector solución del sistema $Ld = b$, que luego nos sirve para resolver $Ux = d$
+
+### Ejemplo 3
+
+Consideremos el sistema
+
+$$\left \{ \begin{matrix}
+ & & x_2 & + & 3x_3 & = & 1\\
+ x_1 & + & 3x_2 & - & 2x_3 & = & 3\\
+ -3x_1 & - & 2x_2 & - & x_3 & = & -2
+\end{matrix} \right .$$
+
+```{r}
+A = rbind(c(0,1,3), c(1,3,-2), c(-3,-2,-1))
+b = c(1,3,-2)
+sistema = LU(A,b)
+```
+
+Componente $P$
+
+```{r}
+sistema$P
+```
+
+Componente $L$
+
+```{r}
+sistema$L
+```
+
+Componente $U$
+
+```{r}
+sistema$U
+```
+
+Componente $d$
+
+```{r}
+sistema$d
+```
+
+Componente $x$
+
+```{r}
+sistema$x
+```
+
