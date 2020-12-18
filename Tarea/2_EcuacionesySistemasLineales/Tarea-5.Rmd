@@ -8,7 +8,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(engine.path = list(octave = "C:/Octave/Octave-5.2.0/mingw64/bin/octave-cli-5.2.0.exe"))
+knitr::opts_chunk$set(engine.path = list(octave = "/usr/bin/octave"))
 library(reticulate)
 ```
 

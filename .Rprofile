@@ -1,1 +1,1 @@
-Sys.setenv(RETICULATE_PYTHON = "C:/Users/estra/Anaconda3/envs/Curso_algebra_lineal/python.exe")
+Sys.setenv(RETICULATE_PYTHON = "/home/dan22/anaconda3/envs/curso_AL/bin/python")
