@@ -1,0 +1,331 @@
+---
+title: 'Tarea 11: Vectores'
+author: "Daniel Eduardo Macias Estrada"
+date: "18/1/2021"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Pregunta 1
+Encontrar un vector equivalente a $\vec{AB}$ donde $A = (1,2)$ y $B = (0,3)$
+
+$$\vec{AB} = (0-1, 3-2) =(-1,1)$$
+Se tiene que encontrar un vector $\vec{CD}$ tal que sea equivalente a $\vec{AB}$
+Esto se puede definir de la siguiente manera $\vec{AB} = \vec{CD} \implies (b_x - a_x, b_y - a_y) = (d_x - c_x, d_y - c_y)$
+
+En base al planteamiento anterior: $(d_x - c_x, d_y - c_y) = (-1,1)$
+
+Lo que a su vez indica: $d_x - c_x = -1$ y $d_y - c_y = 1$
+
+Al despejar las coordenadas del punto $D$: $d_x = c_x - 1$ y $d_y = 1 + c_y$
+
+De esta manera $(c_x,c_y) \in \mathbb{R}$
+
+Por lo tanto tomaremos cualquier valor para las coordenadas
+
+Si $C = (15,2)$, entonces $D = (15-1, 1 + 2) =$ (`r 15-1`, `r 1+2`)
+
+
+## Pregunta 2
+Encontrar un vector equivalente a $\vec{AB}$ con $A = (3,5)$ y $B = (6,-2)$ tal que su origen está en el punto $C = (-1,0)$
+
+$$\vec{AB} = (6-3, -2-5) = (3,-7)$$
+
+Tomando en cuenta el planteamiento anterior, el vector $\vec{CD} = (d_x - c_x, d_y - c_y) = (3,-7)$
+
+Las coordenadas del punto $D$ se definen como: $d_x = 3 + c_x$ y $d_y = c_y - 7$
+
+Como $C = (-1,0)$ entonces: $d_x = 3 - 1$ y $d_y = 0 - 7$
+
+De tal manera, si $C = (-1,0)$ entonces, $D = (2,-7)$
+
+
+## Pregunta 3
+
+Encontrar el módulo, dirección y sentido del vector de componentes (7, -5)
+
+$$\vec{A} = (7,-5)$$
+
+$\Vert \vec{A} \Vert = \sqrt{\langle \vec{A}, \vec{A} \rangle} = \sqrt{7^2 + (-5)^2} =$ `r sqrt(7^2 + (-5)^2)`
+
+
+$\alpha = \arctan{ \left( \dfrac{p_y}{p_x} \right)} = \arctan{ \left( -\dfrac{5}{7} \right)} =$ `r 360 + atan2(-5,7) * (180 / pi)`
+
+
+## Pregunta 4
+Dado el vector de módulo 8 y el hecho de que forma un ángulo de 135° con el eje $OX$, calcular sus componenentes
+
+$\Vert \vec{OX} \Vert = 8 \qquad \alpha = 135°$
+
+$\vec{OX} = (a_x, a_y)$
+
+$a_x = \Vert \vec{OX} \Vert \cdot \cos{(\alpha)} = 8 \cdot \cos(135°) =$ `r a = 8 * cos(135*pi/180); a`
+
+$a_y = \Vert \vec{OX} \Vert \cdot \sin(\alpha) = 8 \cdot \sin(135°) =$ `r b = 8 * sin(135*pi/180); b`
+
+$\vec{A} =$ `r sprintf("(%f, %f)", a, b)`
+
+
+## Pregunta 5
+Dados los puntos $A = (1,2,3)$, $B = (0,-1,2)$ y $C = (-2,-7,0)$, si $D = (-1,x,0)$ encontrar, si es posible, el valor de $x$ para que los vectores $\vec{AB}$ y $\vec{CD}$ sean paralelos 
+
+Los vectores a tomar en cuenta son:
+
+$$\vec{AB} = (0-1, -1-2, 2-3) = (-1,-3,-1)$$
+$$\vec{CD} = (-1-(-2), x-(-7),0-0) = (1,x+7,0)$$
+
+ Para que dos vectores sean paralelos, ambos vectores deben de ser proporcionales. Por lo que 
+ 
+ $$\frac{\vec{AB}}{\vec{CD}} \quad \implies \quad \frac{ab_i}{cd_i} = \frac{-1}{1} = \frac{-3}{x+7} = \frac{-1}{0}$$
+ 
+ Debido a la última razón, obtenemos una indeterminación pues se divide entre 0, lo cual no es posible. Por ende, podemos concluir que no existe valor de $x$ que permite a ambos vectores a ser paralelos.
+ 
+ 
+ 
+
+## Pregunta 6
+Dados los vectores $u = (2,3,0)$ y $v = (-3,0,1)$, encontrar el valor de $k$ para que los vectores $w,z$ sean paralelos donde $w = 2u - v$ y $z = -3u+kv$
+
+$$\vec{w} = 2\vec{u} - \vec{v} = (4,6,0) - (-3,0,1) = (7,6,-1)$$
+
+$$\vec{z} = (-6,-9,0) + k(-3,0,1) = (-6,-9,0)+(-3k,0,k) = (-6-3k, -9, k)$$
+Considerando que los elementos de los vectores deben de ser proporcionales, se puede representar de la siguiente manera
+
+$$\frac{w_i}{z_i} \implies \frac{7}{-6-3k} = \frac{6}{-9} = \frac{-1}{k} \implies -\frac{2}{3} = \frac{-1}{k} \implies k = -1 \cdot -\frac{3}{2} = \frac{3}{2}$$
+
+
+## Pregunta 7
+¿Es el vector (1,2,3) combinación lineal de los vectores (2,3,0) y (-5,0,2)?
+
+$$(1,2,3) = a(2,3,0) + b(-5,0,2)$$
+
+Esto nos da como resultado el siguiente sistema de ecuaciones lineales
+
+$$\left \{ \begin{matrix}
+2a & - & 5b & = & 1\\
+3a & & & = & 2\\
+ & + & 2b & = & 3
+\end{matrix} \right .$$
+
+Esto de manera matricial se representa de la siguiente manera
+
+$$A = \begin{pmatrix}
+2 & -5\\ 3 & 0\\ 0 & 2
+\end{pmatrix} \qquad X = \begin{pmatrix} a\\ b \end{pmatrix} \qquad b = \begin{pmatrix} 1\\2\\3 \end{pmatrix}$$
+
+Usaremos el uso del teorema de Rouché-Frobenius para determinar si existe solucíón para el sistema
+
+$$\begin{vmatrix} 2 & -5\\ 3 & 0 \end{vmatrix} = 2\cdot0 - -5 \cdot 3 = 15 \quad \implies \quad \text{rg}(A) = 2$$
+
+$$det(A|B) = \begin{vmatrix} 2 & -5 & 1\\ 3 & 0 & 2\\ 0 & 2 & 3 \end{vmatrix} = 2(0-4)-(-5)(9-0) + 1(6-0) = -8+45+6 = 43 \quad \implies \quad \text{rg}(A|B) = 3$$
+
+Al no ser iguales los rangos de la matriz de coeficientes y la matriz ampliada, podemos determinar que el sistema es incompatible. Esto a su vez nos lleva a concluir que el vector $(1,2,3)$ no es combinación lineal de $(2,3,0)$ y $(-5,0,2)$
+
+
+## Pregunta 8
+Dados los vectores $u = (2,1,0)$, $v = (-3,4,1)$ y $w = (1,0,-5)$
+
+* Comprobad que el producto escalar cumple la propiedad conmutativa
+* Comprobad que el producto escalar cumple la propiedad distributiva
+* Comprobad que el producto escalar cumple la propiedad asociativa entre escalares y vectores
+
+### Primer punto
+
+$$\langle \vec{u}, \vec{v} \rangle = \langle \vec{v}, \vec{u} \rangle \quad \implies \quad 2 \cdot -3 + 1 \cdot 4 + 0 \cdot 1 = -3 \cdot 2 + 4 \cdot 1 + 1 \cdot 0$$
+
+$$-6 + 4 + 0 = -6 + 4 + 0 \quad \implies \quad -2 = -2$$
+
+Por lo tanto, la propiedad conmutativa se cumple
+
+### Segundo punto
+
+$$\langle \vec{u}, (\vec{v} + \vec{w})\rangle = \langle \vec{u}, \vec{v} \rangle + \langle \vec{u}, \vec{w} \rangle$$
+
+$$\vec{v} + \vec{w} = (-3+1, 4 + 0, 1-5) = (-2,4,-4) \qquad \langle \vec{u}, (\vec{v} + \vec{w}) \rangle = 2 \cdot -2 + 1 \cdot 4 + 0 \cdot -4 = -4+4+0 = 0$$
+
+$$\langle \vec{u}, \vec{v} \rangle = 2 \cdot -3 + 1 \cdot 4 + 0 \cdot 1 = -6+4+0 = -2$$
+
+$$\langle \vec{u}, \vec{w} \rangle = 2 \cdot 1 + 1 \cdot 0 + 0 \cdot -5 = 2+0+0 = 2$$
+
+$$\langle \vec{u}, \vec{v} \rangle + \langle \vec{u}, \vec{w} \rangle = -2+2 = 0$$
+
+Por lo tanto se ccumple la propiedad distributiva
+
+$$\langle \vec{u}, (\vec{v} + \vec{w}) \rangle = \langle \vec{u}, \vec{v} \rangle + \langle \vec{u}, \vec{w} \rangle$$
+
+### Tercer punto
+
+Considerando el escalar $\lambda = 3$
+
+$$\langle (\lambda \vec{u}), \vec{v} \rangle = 6\cdot -3 + 3 \cdot 4 + 0 \cdot 1 = -18+12+0 = -6$$
+
+$$\langle \vec{u}, (\lambda \vec{v}) \rangle = 2\cdot -9 + 1 \cdot 12 + 0 \cdot 3 = -18+12+0 = -6$$
+
+$$\lambda \langle \vec{u}, \vec{v} \rangle = 3(2\cdot -3 + 1 \cdot 4 + 0 \cdot 1) = 3(-6+4) = 3(-2) = -6$$
+
+Por lo tanto, comprobamos que
+$$\langle (\lambda \vec{u}), \vec{v} \rangle = \lambda \langle \vec{u}, \vec{v} \rangle = \langle \vec{u}, (\lambda \vec{v}) \rangle$$
+
+
+## Pregunta 9
+Demostrar que si $u \neq 0$, entonces $\langle u,u\rangle > 0$ donde $u = (u_1, \dots, u_n)$
+
+De esta forma, se representa el producto escalar de $u$ por $u$, de la siguiente manera
+
+$$\langle \vec{u},\vec{u} \rangle > 0 \quad \implies \quad (u_1)^2 + \dots + (u_n)^2 > 0 $$
+
+No necesariamente todos los elementos del vector son diferentes de 0, sin embargo, al aclarar que u no es un vactor nulo, podemos afirmar que por lo menos uno de sus elementos es distinto a 0, lo que causa que el producto escalar sea mayor a 0.
+
+
+## Pregunta 10
+Dado $\vec{u} = (1,2,-1)$
+
+* Calculad su norma
+* Comprobad que 
+
+$$\Vert 2\vec{u} \Vert = 2 \Vert \vec{u} \Vert$$
+
+* Comprobad que 
+
+$$\Vert (-3)\vec{u} \Vert = |-3| \cdot \Vert \vec{u} \Vert = 3\Vert \vec{u} \Vert$$
+
+* Comprobad que si se divide por su norma se obtiene otro vector que es unitario
+
+* Encuentra otro vector de la misma dirección y sentido, pero con norma 3
+
+
+### Primer punto
+
+$$\Vert \vec{u} \Vert = \sqrt{\langle \vec{u}, \vec{u} \rangle} = \sqrt{1^2 + 2^2 + (-1)^2} = \sqrt{1+4+1} = \sqrt{6}$$
+
+### Segundo punto
+
+$$\Vert 2\vec{u} \Vert = 2\Vert u \Vert \quad \implies \quad \sqrt{2^2 + 4^2 + (-2)^2} = 2\sqrt{6}$$
+
+$$\sqrt{4+16+4} = 2\sqrt{6} \quad \implies \quad \sqrt{24} = 2\sqrt{6} \quad \implies \quad 2\sqrt{6} = 2\sqrt{6}$$
+
+## Tercer punto
+
+$$\Vert (-3) \vec{u} \Vert = \sqrt{(-3)^2 + (-6)^2 + 3^2} = \sqrt{9 + 36 + 9} = \sqrt{54} = \sqrt{9\cdot6} = 3\sqrt{6}$$
+
+$$|-3| \cdot \Vert \vec{u} \Vert = 3 \sqrt{6} \qquad 3\Vert \vec{u} \Vert = 3\sqrt{6}$$
+
+Por lo tanto, se comprueba que
+
+$$\Vert (-3)\vec{u} \Vert = |-3| \cdot \Vert \vec{u} \Vert = 3\Vert \vec{u} \Vert$$
+
+### Cuarto punto
+
+$$\frac{1}{\Vert \vec{u} \Vert} \cdot \vec{u} = \vec{v} = \left ( \frac{1}{\sqrt{6}}, \frac{2}{\sqrt{6}}, -\frac{1}{\sqrt{6}} \right )$$
+
+$$\Vert \vec{v} \Vert = \sqrt{\left( \frac{1}{\sqrt{6}} \right)^2 + \left( \frac{2}{\sqrt{6}} \right)^2 + \left( -\frac{1}{\sqrt{6}} \right)^2} = \sqrt{\left( \frac{1}{6} \right) + \left( \frac{4}{6} \right) + \left( \frac{1}{6} \right)} = \sqrt{\frac{6}{6}} = \sqrt{1} = 1$$
+
+Como la norma del vector $u$ dividido por su norma es igual a 1, podemos decir que el vector obtenido al hacer la división es unitario
+
+### Quinto punto
+
+Un vector que tenga la misma dirección, y el mismo sentido, pero con distinto módulo quiere decir que ese vector es paralelo, es decir, que sea proporcional al vector dado
+
+$$\vec{u_m} = a\vec{u} = (a,2a,-a)$$
+
+$$\Vert \vec{u_m} \Vert = \sqrt{a^2 + (2a)^2 + (-a)^2} = \sqrt{a^2+4a^2+a^2} = \sqrt{6a^2} = \sqrt{6}a$$
+
+Si se busca un vector proporcional cuya norma sea 3 entonces realizamos la siguiente igualdad
+
+$$\Vert \vec{u_m} \Vert = 3 \quad \implies \quad \sqrt{6}a = 3 \quad \implies \quad a = \frac{3}{\sqrt{6}} = \frac{\sqrt{6}}{2}$$
+
+Por lo tanto, el vector que tiene la misma dirección y sentido pero cuyo módulo es 3, es
+
+$$\vec{u_m} = \left( \frac{\sqrt{6}}{2}, \sqrt{6}, \frac{\sqrt{6}}{2} \right)$$
+
+
+## Pregunta 11
+Demostrad que cualquier vector $\vec{u}$, al ser dividido por su norma, es unitario
+
+Para demostrar que un vector dividido por su norma es unitario, debemos de comprobar si la norma del mismo es igual a 1
+
+Esto se muestra de la siguiente manera
+
+$$\Vert \frac{1}{\Vert \vec{u} \Vert} \cdot \vec{u} \Vert = 1$$
+
+Como se demostró anteriormente, un escalar puede ser sacado de la operación de norma
+
+$$\frac{1}{\Vert \vec{u} \Vert} \cdot \Vert \vec{u} \Vert = 1 \quad \implies \quad \frac{\Vert \vec{u} \Vert}{\Vert \vec{u} \Vert} = 1$$
+
+De esta manera, se demuestra que el vector obtenido al dividir un vector $u$ por su norma, es unitario
+
+
+## Pregunta 12
+Dados los puntos $A = (1,2,3)$, $B = (0,-1,2)$ y $C = (-2,-7,0)$
+
+* Calcula la distancia entre $A$ y $B$
+* Calcula la distancia entre $A$ y $C$
+* Calcula la distancia entre $B$ y $B$
+
+
+### Primer punto
+
+$$\vec{AB} = (0-1,-1-2,2-3) = (-1,-3,-1)$$
+
+$$d(A,B) = \Vert \vec{AB} \Vert = \sqrt{(-1)^2 + (-3)^2 + (-1)^2} = \sqrt{1+9+1} = \sqrt{11}$$
+
+### Segundo punto
+
+$$\vec{AC} = (-2-1,-7-2,0-3) = (-3,-9,-3)$$
+
+$$d(A,C) = \Vert \vec{AC} \Vert = \sqrt{(-3)^2 + (-9)^2 + (-3)^2} = \sqrt{9+81+9} = \sqrt{99}$$
+
+### Tercer punto
+
+$$\vec{BC} = (-2-0,-7-(-1),0-2) = (-2,-6,-2)$$
+
+$$d(B,C) = \Vert \vec{BC} \Vert = \sqrt{(-2)^2 + (-6)^2 + (-2)^2} = \sqrt{4+36+4} = \sqrt{44}$$
+
+
+## Pregunta 13
+Dados los puntos $A = (1,2,3)$, $B = (0,-1,2)$ y $C = (-2,-7,0)$
+
+* Encuentra el ángulo que forman los vectores $AB$ y $AC$
+* Calcula el producto vectorial de los vectores $CB$ y $AC$
+
+$$\vec{AB} = (-1,-3,-1) \qquad \Vert \vec{AB} \Vert = \sqrt{11}$$
+
+$$\vec{AC} = (-3,-9,-3) \qquad \Vert \vec{AC} \Vert = \sqrt{99} = 3\sqrt{11}$$
+
+$$\vec{CB} = (0-(-2), -1-(-7), 2-0) = (2,6,2) \qquad \Vert \vec{CB} \Vert = \sqrt{44} = 2\sqrt{11}$$
+
+
+### Primer punto
+
+$\cos(\alpha) = \dfrac{\langle \vec{AB}, \vec{AC} \rangle}{\Vert \vec{AB} \Vert \cdot \Vert \vec{AC} \Vert} = \dfrac{(-1\cdot-3 + -3\cdot-9 + -1\cdot-3)}{\sqrt{11} \cdot 3\sqrt{11}} = \dfrac{3+27+3}{3\cdot11} = \dfrac{33}{33} = 1$
+
+$\alpha = \arccos(1) =$ `r acos(1)` 
+
+### Segundo punto
+
+$\cos(\alpha) = \dfrac{\langle \vec{CB}, \vec{AC} \rangle}{\Vert \vec{CB} \Vert \cdot \Vert \vec{AC} \Vert} = \dfrac{(2\cdot-3 + 6\cdot-9 + 2\cdot-3)}{2\sqrt{11} \cdot 3\sqrt{11}} = \dfrac{-6-54-6}{6\cdot11} = \dfrac{-66}{66} = -1$
+
+$\alpha = \arccos(-1) =$ `r acos(-1)` 
+
+## Pregunta 14
+¿Para qué valores de $a$ son ortogonales los vectores $(a,-a-8,a,a) y (a,1,-2,0)$?
+
+Para que dos vectores sean ortogonales deben de tener un ángulo entre sí de 90°, en otras palabras, su producto escalar debe ser igual a 0
+
+$$\vec{u} = (a,-a-8,a,a) \qquad \vec{v} = (a,1,-2,0)$$
+
+$$\langle \vec{u}, \vec{v} \rangle = a\cdot a + (-a-8) \cdot 1 + a \cdot -2 + a \cdot 0 = a^2 - a - 8 -2a = a^2 -3a - 8 = 0$$
+
+$$\frac{-b \pm \sqrt{b^2 - 4ac}}{2a} = \frac{-(-3) \pm \sqrt{(-3)^2 - 4(1)(-8)}}{2(1)} = \frac{3 \pm \sqrt{9+32}}{2} = \frac{3 \pm \sqrt{41}}{2}$$
+
+$a = \dfrac{3 + \sqrt{41}}{2} =$ `r (3+sqrt(41))/2` y $a = \dfrac{3 - \sqrt{41}}{2} =$ `r (3-sqrt(41))/2`
+
+De esta manera podemos asegurar que existen dos valores para $a$ que dan como resultado dos vectores ortogonales
+
+$$a = \begin{cases} 4.7015621 \\ -1.7015621 \end{cases}$$
+
+
