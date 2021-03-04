@@ -274,7 +274,7 @@ $\text{d}(B,C) = \Vert \vec{BC} \Vert = \sqrt{(-25)^2 + 4^2 + (-4)^2} = \sqrt{65
 
 Usando R
 
-```{r p5_2}
+```{r p5_3}
 distancia(B,C)
 ```
 
@@ -292,6 +292,14 @@ $$\alpha = \arccos \left ( \frac{\langle \vec{AB}, \vec{AC} \rangle}{\Vert \vec{
 Usando R
 
 ```{r p6_1}
+productoEscalar = function(x,y){
+  if(length(x) == length(y)){
+    sum(x*y)
+  }else{
+    print("Error")
+  }
+}
+
 angulo = function(x,y){
   if(length(x) == length(y)){
     acos(productoEscalar(x,y)/ (Norm(x) * Norm(y))) * 180/pi
@@ -340,7 +348,7 @@ $$u_1\cdot v_1 = - u_2\cdot v_2 \quad \implies \quad \frac{u_1}{-u_2} = \frac{v_
 
 * Primer versión
 
-```{python}
+```{python p7_1}
 def ortogonal(x):
     if(len(x) != 2):
         return "Error"
@@ -354,7 +362,7 @@ ortogonal(np.array([-45,-74]))
 
 Para definir esta función, es necesario indicar por lo menos un vector y el componente $y$ del otro vector. Se pedirá introducir tanto el vector, como el compoenente $y$ de inicio y el de final, donde el primero debe ser menor que el segundo. De esta manera, se regresará los vectores ortogonales al dado, dentro del rango establecido, saltando su valor en 1.
 
-```{python}
+```{python p7_2}
 def ortogonal2(v, y_1, y_2):
     if(len(v) != 2):
         return "Error"
@@ -372,7 +380,7 @@ ortogonal2(np.array([1,2]), 4, 8)
 
 Analizando en un plano cartesiano, un vector dibujado solo tiene dos posibles vectores ortogonales unitarios.
 
-```{python}
+```{python p7_3}
 def ortogonal3(x):
     if(len(x) != 2):
         return "Error"
